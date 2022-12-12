@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../mainsite/static/css/style.css">
+  <link rel="stylesheet" href="../mainsite/static/css/aboutus.css">
+  <title>Спортивные трансляции</title>
+</head>
+
+<body class="page">
+  <header class="header">
+    <a href="index.html" class="header__logo">
+      <img src="../mainsite/static/image/images/LOGO.png" alt="Logo">
+    </a>
+
+    <hav class="header__navigation">
+      <a href="news.html" class="header__navigation-element">Новости</a>
+      <a href="translationslist.html" class="header__navigation-element">Трансляции</a>
+      <a href="subscription.html" class="header__navigation-element">Подписки</a>
+      <a href="./contacts.html" class="header__navigation-element">Контакты</a>
+      <a href="aboutus.html" class="header__navigation-element">О нас</a>
+    </hav>
+
+    <div class="header__right-items">
+      <a href="settings.html"><img src="../mainsite/static/image/images/user_icon.svg" alt="Иконка" class="header__user-icon"></a>
+      <button class="header__register-button">Регистрация</button>
+      <div class="header__search-n-mg-glass">
+        <form action="" class="searching-form">
+          <input type="text" class="header__search" minlength="1" maxlength="56" required>
+          <button class="btn-no-style searching-button"><img src="../mainsite/static/image/images/magnifying_glass.svg" alt="Лупа" class="header__mag-glass"></button>
+        </form>
+      </div>
+
+
+  </header>
+
+  <main>
+    <div class="streams-margin">
+      <section class="contacts">
+        <h1 class="contacts__title">Контакты</h1>
+        <div class="contacts__text">
+          <b><p>Как с нами связаться:</p></b>
+          <p>Отправить пресс-релиз или официальное сообщение: <b>info@matchtv.ru</b></p>
+          <p>Обратиться в службу поддержки/сообщить о проблеме в работе сайта: <b>support@matchtv.ru</b></p>
+          <p>Задать вопрос/оставить комментарий по правам и лицензиям: <b>mediarights@matchtv.ru</b></p>
+          <p>Связаться с редакцией сайта: <b>matchtv@matchtv.ru</b></p>
+          <p>Вопрос по мобильному приложению МАТЧ! КЛУБ: <b>club@matchtv.ru</b></p>
+          <p>Контакты для прессы: <b>pressa@matchtv.ru</b></p>
+        </div>
+      </section>
+      <div class="px2"></div>
+    </div>
+
+    <section class="translations-container">
+      <div class="translations">
+        <h2 class="translations__title">Трансляции</h2>
+        <form class="translations__date-choose" method="post" action="">
+          <button
+            class="translations__date-choose-btn_type_yesterday btn-no-style translations__date-choose-font-style">Вчера</button>
+          <button
+            class="translations__date-choose-btn_type_today btn-no-style translations__date-choose-font-style translations__date-choose_active">Сегодня</button>
+          <button
+            class="translations__date-choose-btn_type_tomorrow btn-no-style translations__date-choose-font-style">Завтра</button>
+            <input type="date" name="calendar"
+            class="translations__date-choose-btn_type_calendar btn-no-style translations__date-choose-font-style">
+        </form>
+        <form class="translations__sport-choose" method="post" action="">
+          <button class="translations__sport-chose-btn_type_all btn-no-style translations__sport-choose-btn-font-style">
+            Все</button>
+          <button
+            class="translations__sport-chose-btn_type_football btn-no-style translations__sport-choose-btn-font-style translations__sport-choose_active">Футбол</button>
+          <button
+            class="translations__sport-chose-btn_type_hockey btn-no-style translations__sport-choose-btn-font-style">Хоккей</button>
+        </form>
+        <div class="matches">
+          <h2 class="matches__title">Товарищеские матчи 2020-2022</h2>
+          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+            <div class="match__indicator match__indicator_color_red"></div>
+            <p class="match__time">23:00</p>
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+              alt="Флаг команды" class="match__team1-flag">
+            <p class="match__dash teams-font-style"> - </p>
+            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <p class="match__team2 teams-font-style">Сенегал</p>
+          </article></a>
+          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+            <div class="match__indicator match__indicator_color_red"></div>
+            <p class="match__time">23:00</p>
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+              alt="Флаг команды" class="match__team1-flag">
+            <p class="match__dash teams-font-style"> - </p>
+            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <p class="match__team2 teams-font-style">Сенегал</p>
+          </article></a>
+          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+            <div class="match__indicator"></div>
+            <p class="match__time">23:00</p>
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+              alt="Флаг команды" class="match__team1-flag">
+            <p class="match__dash teams-font-style"> - </p>
+            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <p class="match__team2 teams-font-style">Сенегал</p>
+          </article></a>
+          <a href="translationslist.html" class="non-decor"><button class="translations__list-btn btn-no-style">
+            <p class="translations__list-btn-text">Список трансляций</p>
+          </button></a>
+    </section>
+  </main>
+
+  <section class="popup-reg">
+    <div class="popup-reg__container">
+      <button class="popup__close btn-no-style" type="button"><img src="../mainsite/static/image/images/Close_Icon.svg" alt="крестик"
+                                                                   class="popup__close-image"></button>
+      <h2 class="popup-reg__title">Зарегистрироваться</h2>
+      <form action="" class="popup-reg__form">
+        <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
+        <input type="text" placeholder="Имя" class="popup-reg__input_type_name popup-reg__form-styles" required>
+        <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles"
+          required>
+        <input type="password" placeholder="Подтверждение пароля"
+          class="popup-reg__input_type_password popup-reg__form-styles" required>
+        <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles" required>
+        <button class="popup-reg__reg-btn btn-no-style">Регистрация</button>
+        <button class="popup-reg__login btn-no-style">Уже есть аккаунт?</button>
+      </form>
+    </div>
+  </section>
+  <section class="popup-log">
+    <div class="popup-log__container">
+      <button class="popup__close btn-no-style popup__close2" type="button"><img src="../mainsite/static/image/images/Close_Icon.svg" alt="крестик"
+                                                                                 class="popup__close-image"></button>
+      <h2 class="popup-reg__title">Войти</h2>
+      <form action="" class="popup-log__form">
+        <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
+        <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles" required>
+        <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles"
+          required>
+        <button class="popup-reg__reg-btn btn-no-style popup-log__log-btn">Войти</button>
+        <button class="btn-no-style popup-log__register">Регистрация</button>
+      </form>
+    </div>
+  </section>
+  <footer class="footer">
+    <a href="index.html"><img src="../mainsite/static/image/images/LOGO_footer.svg" alt="logo" class="footer__logo"></a>
+    <hav class="header__navigation footer__navigation">
+      <a href="news.html" class="header__navigation-element">Новости</a>
+      <a href="translationslist.html" class="header__navigation-element">Трансляции</a>
+      <a href="subscription.html" class="header__navigation-element">Подписки</a>
+      <a href="./contacts.html" class="header__navigation-element">Контакты</a>
+      <a href="aboutus.html" class="header__navigation-element">О нас</a>
+    </hav>
+    <div></div>
+  </footer>
+  <script src="../mainsite/static/js/script.js"></script>
+</body>
+
+</html>
