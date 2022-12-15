@@ -58,6 +58,15 @@ popupCloseBtn2.addEventListener('click', () => {
   popupLogin.classList.remove('popup_active');
 });
 
+const transChooseContainer = document.querySelector('.translations__sport-choose');
+const transChooseList = Array.from(document.querySelectorAll('.news__sport-chose-btn-style'));
+transChooseContainer.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.target.classList.add('translations__sport-choose_active');
+  console.log(1);
+
+})
+/*
 const allSportsBtn = document.querySelector('.translations__sport-chose-btn_type_all');
 const footbalSportBtn = document.querySelector('.translations__sport-chose-btn_type_football');
 const hockeySportBtn = document.querySelector('.translations__sport-chose-btn_type_hockey');
@@ -114,7 +123,7 @@ newsSportHockey.addEventListener('click', () => {
   newsSportFootbal.classList.remove('translations__sport-choose_active');
   newsSportAll.classList.remove('translations__sport-choose_active');
 });
-
+*/
 
 const searchingForm = document.querySelector('.searching-form');
 const poiskInput = document.querySelector('.poisk__input');
