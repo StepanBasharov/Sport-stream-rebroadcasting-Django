@@ -89,7 +89,7 @@
             </form>
             <form class="translations__sport-choose" method="post" action="">
                 {% csrf_token %}
-                <a href="{% url 'index' %}" class="translations__sport-chose-btn_type_all btn-no-style translations__sport-choose-btn-font-style translations__sport-choose_active">
+                <a href="{% url 'index' %}" class="translations__sport-chose-btn_type_all btn-no-style translations__sport-choose-btn-font-style">
                     Все
                 </a>
                 {% for i in category %}

@@ -7,7 +7,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index)
+    path('', views.index, name='index'),
+    path('/<str:category_name>', views.index_category, name='cat')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
