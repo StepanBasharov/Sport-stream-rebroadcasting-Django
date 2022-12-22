@@ -5,31 +5,53 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../mainsite/static/css/style.css">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./adaptive.css">
   <title>Спортивные трансляции</title>
 </head>
 
 <body class="page">
   <header class="header">
-    <a href="index.html" class="header__logo">
-      <img src="../mainsite/static/image/images/LOGO.png" alt="Logo">
+    <a href="./index.html" class="header__logo">
+      <img src="./images/LOGO.png" alt="Logo">
     </a>
 
     <hav class="header__navigation">
-      <a href="news.html" class="header__navigation-element">Новости</a>
-      <a href="translationslist.html" class="header__navigation-element">Трансляции</a>
-      <a href="subscription.html" class="header__navigation-element">Подписки</a>
-      <a href="contacts.html" class="header__navigation-element">Контакты</a>
-      <a href="aboutus.html" class="header__navigation-element">О нас</a>
+      <a href="./news.html" class="header__navigation-element">Новости</a>
+      <a href="./translationslist.html" class="header__navigation-element">Трансляции</a>
+      <a href="./subscription.html" class="header__navigation-element">Подписки</a>
+      <a href="./contacts.html" class="header__navigation-element">Контакты</a>
+      <a href="./aboutus.html" class="header__navigation-element">О нас</a>
     </hav>
 
+    <div class="hamburger-menu">
+      <input id="menu__toggle" type="checkbox" />
+      <label class="menu__btn" for="menu__toggle">
+        <span></span>
+      </label>
+
+      <ul class="menu__box">
+        <li><a class="menu__item" href="./news.html">Новости</a></li>
+        <li><a class="menu__item" href="./translationslist.html">Трансляции</a></li>
+        <li><a class="menu__item" href="./subscription.html">Подписки</a></li>
+        <li><a class="menu__item" href="./contacts.html">Контакты</a></li>
+        <li><a class="menu__item" href="./aboutus.html">О нас</a></li>
+      </ul>
+    </div>
+
+    <div class="ether">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#616161" class="bi bi-broadcast-pin" viewBox="0 0 16 16">
+        <path d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707zm2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708zm5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708zm2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM6 8a2 2 0 1 1 2.5 1.937V15.5a.5.5 0 0 1-1 0V9.937A2 2 0 0 1 6 8z"/>
+      </svg>
+    </div>
+
     <div class="header__right-items">
-      <a href="settings.html"><img src="../mainsite/static/image/images/user_icon.svg" alt="Иконка" class="header__user-icon"></a>
+      <a href="./settings.html"><img src="./images/user_icon.svg" alt="Иконка" class="header__user-icon"></a>
       <button class="header__register-button">Регистрация</button>
       <div class="header__search-n-mg-glass">
         <form action="" class="searching-form">
           <input type="text" class="header__search" minlength="1" maxlength="56" required>
-          <button class="btn-no-style searching-button"><img src="../mainsite/static/image/images/magnifying_glass.svg" alt="Лупа" class="header__mag-glass"></button>
+          <button class="btn-no-style searching-button"><img src="./images/magnifying_glass.svg" alt="Лупа" class="header__mag-glass"></button>
         </form>
       </div>
   </header>
@@ -40,15 +62,15 @@
         <h1 class="post__title">
           «ФИГУРНОЕ КАТАНИЕ — СЛОЖНЫЙ КОРАБЛЬ, ГОРШКОВ УМЕЛО И ПРАВИЛЬНО ВЕЛ ЕГО К УСПЕХАМ» — ЛАЙШЕВ
         </h1>
-        <img src="../mainsite/static/image/images/image%2010layshev.png" alt="#" class="post__img">
+        <img src="./images/image 10layshev.png" alt="#" class="post__img">
         <div class="post__info">
           <p class="post__img-source">Фото: © РИА Новости / Алексей Никольский</p>
           <div>
             <button class="post__like btn-no-style post__btns">
-              <img src="../mainsite/static/image/images/Mask%20grouplike1.svg" alt="#">
+              <img src="./images/Mask grouplike1.svg" alt="#">
             </button>
             <button class="post__dislike btn-no-style post__btns">
-              <img src="../mainsite/static/image/images/Mask%20grouplike2.svg" alt="#">
+              <img src="./images/Mask grouplike2.svg" alt="#">
             </button>
           </div>
         </div>
@@ -91,107 +113,107 @@
         </form>
         <div class="matches">
           <h2 class="matches__title">Товарищеские матчи 2020-2022</h2>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator match__indicator_color_red"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator match__indicator_color_red"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
-          <a href="translationcard.html" class="non-decor link-trans"><article class="match">
+          <a href="./translationcard.html" class="non-decor link-trans"><article class="match">
             <div class="match__indicator"></div>
             <p class="match__time">23:00</p>
-            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="../mainsite/static/image/images/team1-flag.svg"
+            <p class="match__team1 teams-font-style">Буркина-Фасо</p><img src="./images/team1-flag.svg"
               alt="Флаг команды" class="match__team1-flag">
             <p class="match__dash teams-font-style"> - </p>
-            <img src="../mainsite/static/image/images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
+            <img src="./images/team2-flag.svg" alt="Флаг команды" class="match__team2-flag">
             <p class="match__team2 teams-font-style">Сенегал</p>
           </article></a>
         </div>
-        <a href="translationslist.html" class="non-decor"><button class="translations__list-btn btn-no-style">
+        <a href="./translationslist.html" class="non-decor"><button class="translations__list-btn btn-no-style">
           <p class="translations__list-btn-text">Список трансляций</p>
         </button></a>
       </div>
@@ -199,8 +221,8 @@
 
   <section class="popup-reg">
     <div class="popup-reg__container">
-      <button class="popup__close btn-no-style" type="button"><img src="../mainsite/static/image/images/Close_Icon.svg" alt="крестик"
-                                                                   class="popup__close-image"></button>
+      <button class="popup__close btn-no-style" type="button"><img src="./images/Close_Icon.svg" alt="крестик"
+        class="popup__close-image"></button>
       <h2 class="popup-reg__title">Зарегистрироваться</h2>
       <form action="" class="popup-reg__form">
         <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
@@ -217,8 +239,8 @@
   </section>
   <section class="popup-log">
     <div class="popup-log__container">
-      <button class="popup__close btn-no-style popup__close2" type="button"><img src="../mainsite/static/image/images/Close_Icon.svg" alt="крестик"
-                                                                                 class="popup__close-image"></button>
+      <button class="popup__close btn-no-style popup__close2" type="button"><img src="./images/Close_Icon.svg" alt="крестик"
+        class="popup__close-image"></button>
       <h2 class="popup-reg__title">Войти</h2>
       <form action="" class="popup-log__form">
         <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
@@ -231,17 +253,17 @@
     </div>
   </section>
   <footer class="footer">
-    <a href="index.html"><img src="../mainsite/static/image/images/LOGO_footer.svg" alt="logo" class="footer__logo"></a>
+    <a href="./index.html"><img src="./images/LOGO_footer.svg" alt="logo" class="footer__logo"></a>
     <hav class="header__navigation footer__navigation">
-      <a href="news.html" class="header__navigation-element">Новости</a>
-      <a href="translationslist.html" class="header__navigation-element">Трансляции</a>
-      <a href="subscription.html" class="header__navigation-element">Подписки</a>
-      <a href="contacts.html" class="header__navigation-element">Контакты</a>
-      <a href="aboutus.html" class="header__navigation-element">О нас</a>
+      <a href="./news.html" class="header__navigation-element">Новости</a>
+      <a href="./translationslist.html" class="header__navigation-element">Трансляции</a>
+      <a href="./subscription.html" class="header__navigation-element">Подписки</a>
+      <a href="./contacts.html" class="header__navigation-element">Контакты</a>
+      <a href="./aboutus.html" class="header__navigation-element">О нас</a>
     </hav>
     <div></div>
   </footer>
-  <script src="../mainsite/static/js/script.js"></script>
+  <script src="./script.js"></script>
 </body>
 
 </html>
