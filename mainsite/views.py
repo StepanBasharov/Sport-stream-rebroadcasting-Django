@@ -49,8 +49,11 @@ class Index(View):
             date_filter = data_date
         category_list = Category.objects.all()
         translations = Translation.objects.all()
-        filtered_translations = Translation.objects.filter(category__name=category, date=date_filter)
-        return render(request, 'index.html',
+        if category == "all":
+            filtered_translations = Translation.objects.filter(date=date_filter)
+        else:
+            filtered_translations = Translation.objects.filter(category__name=category, date=date_filter)
+        return render(request, 'filtred_translations.html',
                       {"category": category_list, "translations": translations,
                        'filtered_translations': filtered_translations, 'key': category, 'day': date,
                        "day_date": date_filter})
