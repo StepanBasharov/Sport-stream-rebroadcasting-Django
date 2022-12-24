@@ -46,6 +46,7 @@ class Index(View):
             tomorrow = today + timedelta(days=1)
             date_filter = tomorrow.strftime(date_format)
         else:
+            print(data_date)
             date_filter = data_date
         category_list = Category.objects.all()
         translations = Translation.objects.all()
