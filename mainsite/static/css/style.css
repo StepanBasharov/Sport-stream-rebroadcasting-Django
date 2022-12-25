@@ -127,7 +127,6 @@
   width: 350px;
   /* max-width: 339px; */
   height: 225px;
-  background-image: url(./images/Group\ 48-trrr.png);
   flex-shrink: 0;
 }
 
@@ -177,13 +176,22 @@
   color: rgba(0, 0, 0, 0.7);
 }
 
-.top-streams__price {
+.top-streams__free {
   margin-bottom: 8px;
   font-style: normal;
   font-weight: 800;
   font-size: 15px;
   line-height: 18px;
   color: #1A6F43;
+}
+
+.top-streams__pay {
+  margin-bottom: 8px;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 18px;
+  color: #6f1a31;
 }
 
 .top-streams__description {
@@ -1184,6 +1192,10 @@
   font-size: 20px;
   line-height: 24px;
   margin: 0 0 15px 0;
+}
+
+.news__large-img {
+  max-width: 50%;
 }
 
 .news3 {

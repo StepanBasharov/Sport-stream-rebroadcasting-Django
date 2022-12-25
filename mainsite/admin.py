@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Category, Translation
+from .models import *
 
 admin.site.register(Category)
 admin.site.register(Translation)
+admin.site.register(News)

@@ -1,58 +1,23 @@
-{% extends "base.html" %}
-{% block title %}Спортивные трансляции{% endblock title %}
-{% block content %}
-<div class="streams-margin">
+{% extends "base.html" %} {% block title %}Спортивные трансляции{% endblock title %} {% block content %}
+
+    <div class="streams-margin">
         <section class="top-streams">
             <h2 class="top-streams__title">Топ трансляций</h2>
             <div class="top-streams__container">
-                <div class="top-streams__elem">
-                    <a href="./translationcard.html" class="top-streams-img"></a>
-                    <p class="top-streams__date">17 ноября 2022г <span class="top-streams__sport">футбол</span></p>
-                    <p class="top-streams__price">Бесплатно</p>
-                    <p class="top-streams__description">ФУТБОЛ. FONBET КУБОК РОССИИ ПО ФУТБОЛУ СЕЗОНА 2022 - 2023 ГГ.
-                        АКРОН -
-                        АЛАНИЯ</p>
-                </div>
-                <div class="top-streams__elem">
-                    <a href="./translationcard.html" class="top-streams-img"></a>
-                    <p class="top-streams__date">17 ноября 2022г <span class="top-streams__sport">футбол</span></p>
-                    <p class="top-streams__price">Бесплатно</p>
-                    <p class="top-streams__description">ФУТБОЛ. FONBET КУБОК РОССИИ ПО ФУТБОЛУ СЕЗОНА 2022 - 2023 ГГ.
-                        АКРОН -
-                        АЛАНИЯ</p>
-                </div>
-                <div class="top-streams__elem">
-                    <a href="./translationcard.html" class="top-streams-img"></a>
-                    <p class="top-streams__date">17 ноября 2022г <span class="top-streams__sport">футбол</span></p>
-                    <p class="top-streams__price">Бесплатно</p>
-                    <p class="top-streams__description">ФУТБОЛ. FONBET КУБОК РОССИИ ПО ФУТБОЛУ СЕЗОНА 2022 - 2023 ГГ.
-                        АКРОН -
-                        АЛАНИЯ</p>
-                </div>
-                <div class="top-streams__elem">
-                    <a href="./translationcard.html" class="top-streams-img"></a>
-                    <p class="top-streams__date">17 ноября 2022г <span class="top-streams__sport">футбол</span></p>
-                    <p class="top-streams__price">Бесплатно</p>
-                    <p class="top-streams__description">ФУТБОЛ. FONBET КУБОК РОССИИ ПО ФУТБОЛУ СЕЗОНА 2022 - 2023 ГГ.
-                        АКРОН -
-                        АЛАНИЯ</p>
-                </div>
-                <div class="top-streams__elem">
-                    <a href="./translationcard.html" class="top-streams-img"></a>
-                    <p class="top-streams__date">17 ноября 2022г <span class="top-streams__sport">футбол</span></p>
-                    <p class="top-streams__price">Бесплатно</p>
-                    <p class="top-streams__description">ФУТБОЛ. FONBET КУБОК РОССИИ ПО ФУТБОЛУ СЕЗОНА 2022 - 2023 ГГ.
-                        АКРОН -
-                        АЛАНИЯ</p>
-                </div>
-                <div class="top-streams__elem">
-                    <a href="./translationcard.html" class="top-streams-img"></a>
-                    <p class="top-streams__date">17 ноября 2022г <span class="top-streams__sport">футбол</span></p>
-                    <p class="top-streams__price">Бесплатно</p>
-                    <p class="top-streams__description">ФУТБОЛ. FONBET КУБОК РОССИИ ПО ФУТБОЛУ СЕЗОНА 2022 - 2023 ГГ.
-                        АКРОН -
-                        АЛАНИЯ</p>
-                </div>
+                {% for translation in translations %}
+                    <div class="top-streams__elem">
+                        <a href="./translationcard.html" class="top-streams-img"
+                           style="background-image: url('{{ translation.preview.url }}')"></a>
+                        <p class="top-streams__date">{{ translation.date }} <span
+                                class="top-streams__sport">{{ translation.category }}</span></p>
+                        {% if translation.is_pay == "Бесплатно" %}
+                            <p class="top-streams__free">{{ translation.is_pay }}</p>
+                        {% else %}
+                            <p class="top-streams__pay">{{ translation.is_pay }}</p>
+                        {% endif %}
+                        <p class="top-streams__description">{{ translation.name }}</p>
+                    </div>
+                {% endfor %}
             </div>
         </section>
         <div class="px2"></div>
@@ -61,145 +26,61 @@
 {% block content2 %}
     <section class="news">
         <h2 class="news__title">Новости</h2>
-        <form class="news__sport-choose translations__sport-choose" method="post" action="">
-            <button class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all">
-                Все
-            </button>
-            <button
+        <form class="news__sport-choose translations__sport-choose" method="post" action="" name="news_filter">
+            {% csrf_token %}
+            {% if news_key == "all" %}
+                <button value="all"
+                        class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all news__sport-chose-btn_type_hockey translations__sport-choose_active news__sport-chose-btn-style">
+                    Все
+                </button> {% else %}
+                <button value="all" class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all">
+                    Все
+                </button> {% endif %} {% for categor in category %} {% if news_key == categor.name %}
+            <button value="{{ categor.name }}"
                     class="news__sport-chose-btn_type_footbal btn-no-style translations__sport-choose_active news__sport-chose-btn-style">
-                Футбол
-            </button>
-            <button class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_hockey">Хоккей</button>
+                {{ categor.name }}
+            </button> {% else %}
+            <button value="{{ categor.name }}" class="news__sport-chose-btn_type_footbal btn-no-style ">
+                {{ categor.name }}
+            </button> {% endif %} {% endfor %}
         </form>
         <article class="news__grid1">
             <div class="news__large-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 4.png" alt="img"
+                <a href="./newscard.html" class="link-decor"><img src="{{ first_news.0.preview.url }}" alt="img"
                                                                   class="news__large-img"></a>
-                <p class="news__large-post-title">“Надо показать всему миру , что нас не сломать”. Дмитрий Баринов перед
-                    матчем Сборной России</p>
+                <p class="news__large-post-title">Бла бла бла</p>
             </div>
             <div class="news__medium-post1">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 5.png" alt="img"
+                <a href="./newscard.html" class="link-decor"><img src="{{ first_news.1.preview.url }}" alt="img"
                                                                   class="news__medium-img"></a>
                 <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
+                    <p class="news__date">{{ first_news.1.date }}</p>
+                    <p class="news__sport">{{ first_news.1.category }}</p>
                 </div>
-                <p class="news__description">Карпин заявил, что в сборной России «давным-давно» нет премиальных за
-                    победу</p>
+                <p class="news__description">{{ first_news.1.text }}</p>
             </div>
             <div class="news__medium-post2">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 6.png" alt="img"
+                <a href="./newscard.html" class="link-decor"><img src="{{ first_news.2.preview.url }}" alt="img"
                                                                   class="news__medium-img"></a>
                 <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
+                    <p class="news__date">{{ first_news.2.date }}</p>
+                    <p class="news__sport">{{ first_news.2.category }}</p>
                 </div>
-                <p class="news__description">Тренер сборной Таджикистана: «Прошу не забывать, что господин Карпин уже
-                    проигрывал хорватам, а я как раз таки хорват»</p>
+                <p class="news__description">{{ first_news.2.text }}</p>
             </div>
         </article>
         <article class="news__grid2">
+            {% for new in news %}
             <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
+                <a href="./newscard.html" class="link-decor"><img src="{{ new.preview.url }}" alt="img"> </a>
                 <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
+                    <p class="news__date">{{ new.date }}</p>
+                    <p class="news__sport">{{ new.category }}</p>
                 </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
+                <p class="news__description_type_small-post">{{ new.name }}</p>
             </div>
             </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="./images/image 7.png" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">17 ноября 2022г</p>
-                    <p class="news__sport">Футбол</p>
-                </div>
-                <p class="news__description_type_small-post">Тренер сборной Таджикистана: «Прошу не забывать, что
-                    господин
-                    Карпин уже проигрывал хорватам, а я как раз таки хорват»</p>
-            </div>
-            </div>
+            {% endfor %}
         </article>
     </section>
 {% endblock content2 %}
-

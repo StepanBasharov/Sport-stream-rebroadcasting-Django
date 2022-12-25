@@ -1,8 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
 class Category(models.Model):
     name = models.CharField(max_length=64)
     slug = models.CharField(max_length=64, default="slug")
@@ -28,3 +26,15 @@ class Translation(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class News(models.Model):
+    name = models.CharField(max_length=100)
+    text = models.TextField(max_length=3000)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    preview = models.ImageField(upload_to='images')
+    date = models.DateField(null=True)
+
+    def __str__(self):
+        return self.name
+
