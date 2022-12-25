@@ -26,21 +26,21 @@
 {% block content2 %}
     <section class="news">
         <h2 class="news__title">Новости</h2>
-        <form class="news__sport-choose translations__sport-choose" method="post" action="" name="news_filter">
+        <form class="news__sport-choose translations__sport-choose" method="post" action="">
             {% csrf_token %}
             {% if news_key == "all" %}
-                <button value="all"
+                <button value="all" name="news_filter"
                         class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all news__sport-chose-btn_type_hockey translations__sport-choose_active news__sport-chose-btn-style">
                     Все
                 </button> {% else %}
-                <button value="all" class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all">
+                <button value="all" name="news_filter" class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all">
                     Все
                 </button> {% endif %} {% for categor in category %} {% if news_key == categor.name %}
-            <button value="{{ categor.name }}"
+            <button name="news_filter" value="{{ categor.name }}"
                     class="news__sport-chose-btn_type_footbal btn-no-style translations__sport-choose_active news__sport-chose-btn-style">
                 {{ categor.name }}
             </button> {% else %}
-            <button value="{{ categor.name }}" class="news__sport-chose-btn_type_footbal btn-no-style ">
+            <button name="news_filter" value="{{ categor.name }}" class="news__sport-chose-btn_type_footbal btn-no-style ">
                 {{ categor.name }}
             </button> {% endif %} {% endfor %}
         </form>
