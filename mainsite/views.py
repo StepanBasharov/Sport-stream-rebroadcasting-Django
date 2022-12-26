@@ -32,7 +32,10 @@ class Index(View):
             if category_news != None:
                 category = Category.objects.all()
                 translations = Translation.objects.all()
-                news = News.objects.filter(category__name=category_news)
+                if category_news == "all":
+                    news = News.objects.all()
+                else:
+                    news = News.objects.filter(category__name=category_news)
                 news_key = category_news
                 first_news = news[:3]
                 news = news[3:]
