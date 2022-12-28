@@ -6,7 +6,7 @@
             <div class="top-streams__container">
                 {% for translation in translations %}
                     <div class="top-streams__elem">
-                        <a href="./translationcard.html" class="top-streams-img"
+                        <a href="{% url 'translation' translation.id %}" class="top-streams-img"
                            style="background-image: url('{{ translation.preview.url }}')"></a>
                         <p class="top-streams__date">{{ translation.date }} <span
                                 class="top-streams__sport">{{ translation.category }}</span></p>
@@ -33,25 +33,28 @@
                         class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all news__sport-chose-btn_type_hockey translations__sport-choose_active news__sport-chose-btn-style">
                     Все
                 </button> {% else %}
-                <button value="all" name="news_filter" class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all">
+                <button value="all" name="news_filter"
+                        class="news__sport-chose-btn-style btn-no-style news__sport-chose-btn_type_all">
                     Все
                 </button> {% endif %} {% for categor in category %} {% if news_key == categor.name %}
+
             <button name="news_filter" value="{{ categor.name }}"
                     class="news__sport-chose-btn_type_footbal btn-no-style translations__sport-choose_active news__sport-chose-btn-style">
                 {{ categor.name }}
             </button> {% else %}
-            <button name="news_filter" value="{{ categor.name }}" class="news__sport-chose-btn_type_footbal btn-no-style ">
+            <button name="news_filter" value="{{ categor.name }}"
+                    class="news__sport-chose-btn_type_footbal btn-no-style ">
                 {{ categor.name }}
             </button> {% endif %} {% endfor %}
         </form>
         <article class="news__grid1">
             <div class="news__large-post">
-                <a href="./newscard.html" class="link-decor"><img src="{{ first_news.0.preview.url }}" alt="img"
+                <a href="{% url 'news_card' first_news.0.id %}" class="link-decor"><img src="{{ first_news.0.preview.url }}" alt="img"
                                                                   class="news__large-img"></a>
                 <p class="news__large-post-title">{{ first_news.0.name }}</p>
             </div>
             <div class="news__medium-post1">
-                <a href="./newscard.html" class="link-decor"><img src="{{ first_news.1.preview.url }}" alt="img"
+                <a href="{% url 'news_card' first_news.1.id %}" class="link-decor"><img src="{{ first_news.1.preview.url }}" alt="img"
                                                                   class="news__medium-img"></a>
                 <div class="news__date-n-sport">
                     <p class="news__date">{{ first_news.1.date }}</p>
@@ -60,7 +63,7 @@
                 <p class="news__description">{{ first_news.1.text }}</p>
             </div>
             <div class="news__medium-post2">
-                <a href="./newscard.html" class="link-decor"><img src="{{ first_news.2.preview.url }}" alt="img"
+                <a href="{% url 'news_card' first_news.2.id %}" class="link-decor"><img src="{{ first_news.2.preview.url }}" alt="img"
                                                                   class="news__medium-img"></a>
                 <div class="news__date-n-sport">
                     <p class="news__date">{{ first_news.2.date }}</p>
@@ -71,15 +74,14 @@
         </article>
         <article class="news__grid2">
             {% for new in news %}
-            <div class="news__small-post">
-                <a href="./newscard.html" class="link-decor"><img src="{{ new.preview.url }}" alt="img"> </a>
-                <div class="news__date-n-sport">
-                    <p class="news__date">{{ new.date }}</p>
-                    <p class="news__sport">{{ new.category }}</p>
+                <div class="news__small-post">
+                    <a href="{% url 'news_card' new.id %}" class="link-decor"><img src="{{ new.preview.url }}" alt="img" class="grid2-img"> </a>
+                    <div class="news__date-n-sport">
+                        <p class="news__date">{{ new.date }}</p>
+                        <p class="news__sport">{{ new.category }}</p>
+                    </div>
+                    <p class="news__description_type_small-post">{{ new.name }}</p>
                 </div>
-                <p class="news__description_type_small-post">{{ new.name }}</p>
-            </div>
-            </div>
             {% endfor %}
         </article>
     </section>

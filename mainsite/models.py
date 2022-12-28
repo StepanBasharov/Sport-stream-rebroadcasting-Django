@@ -30,10 +30,13 @@ class Translation(models.Model):
 
 class News(models.Model):
     name = models.CharField(max_length=100)
-    text = models.TextField(max_length=3000)
+    text = models.TextField(max_length=30000)
+    photo_author = models.TextField(max_length=100, default="Неизвестен")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     preview = models.ImageField(upload_to='images')
     date = models.DateField(null=True)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

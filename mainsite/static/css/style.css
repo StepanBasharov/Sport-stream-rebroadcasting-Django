@@ -127,6 +127,7 @@
   width: 350px;
   /* max-width: 339px; */
   height: 225px;
+  background-image: url(./images/Group\ 48-trrr.png);
   flex-shrink: 0;
 }
 
@@ -191,7 +192,7 @@
   font-weight: 800;
   font-size: 15px;
   line-height: 18px;
-  color: #6f1a31;
+  color: #6f1a3d;
 }
 
 .top-streams__description {
@@ -566,7 +567,8 @@
     "large large"
     "medium1 medium2";
   gap: 10px;
-  margin-bottom: 150px;
+  margin-bottom: 185px;
+  max-width: 100%;
 }
 
 .news__large-post {
@@ -952,7 +954,6 @@
 
 
 .tranlation__container {
-  background-image: url(./images/1_translation.png);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1194,10 +1195,6 @@
   margin: 0 0 15px 0;
 }
 
-.news__large-img {
-  max-width: 50%;
-}
-
 .news3 {
   margin: 100px auto 60px auto;
   max-width: 1068px;
@@ -1292,6 +1289,27 @@
 
 .transelem__live_active {
   color: #DC0000;
+}
+
+.news__large-img {
+  max-width: 1037px;
+}
+
+.news__large-post {
+  max-width: 1037px;
+}
+
+.news__medium-img {
+  max-width: 513px;
+}
+
+.news__medium-post {
+  max-width: 513px;
+}
+
+.grid2-img {
+  width: 340px;
+  height: 225px;
 }
 
 @media (max-width: 1520px) {
