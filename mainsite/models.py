@@ -23,6 +23,7 @@ class Translation(models.Model):
     is_pay = models.CharField(choices=is_pay_type, max_length=50)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     link = models.CharField(max_length=200)
+    description = models.TextField(max_length=3000, default="Прямая трансляция")
 
     def __str__(self):
         return self.name

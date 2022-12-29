@@ -3,6 +3,7 @@ from .models import *
 from django.views import View
 from datetime import datetime, timedelta
 
+
 def translation_filter(request, template):
     # Получаем 3 возможных запроса
     category_key = request.POST.get('sport')
@@ -19,18 +20,18 @@ def translation_filter(request, template):
             category = Category.objects.all()
             translations = Translation.objects.all()
             if category_news == "all":
-                news = News.objects.all() 
+                news = News.objects.all()
             else:
                 news = News.objects.filter(category__name=category_news)
             news_key = category_news
             first_news = news[:3]
             news = news[3:]
             return render(request, template,
-                            {"category": category, "translations": translations, 'news': news,
-                            'first_news': first_news,
-                            'key': 'all',
-                            "news_key": news_key, 'day': 'Сегодня',
-                            'is_filter': False})
+                          {"category": category, "translations": translations, 'news': news,
+                           'first_news': first_news,
+                           'key': 'all',
+                           "news_key": news_key, 'day': 'Сегодня',
+                           'is_filter': False})
         else:
             # Проверяем, по какому запросы пришли валидные данные
             try:
@@ -84,10 +85,10 @@ def translation_filter(request, template):
                 data = None
                 data_key = ''
             return render(request, template,
-                            {data_key: data, "category": category_list, "translations": translations, 'news': news,
-                            'first_news': first_news,
-                            'filtered_translations': filtered_translations, 'key': category, 'day': date,
-                            "day_date": date_filter, 'is_filter': True, "news_key": news_key})
+                          {data_key: data, "category": category_list, "translations": translations, 'news': news,
+                           'first_news': first_news,
+                           'filtered_translations': filtered_translations, 'key': category, 'day': date,
+                           "day_date": date_filter, 'is_filter': True, "news_key": news_key})
     # Если POST запрос прошел по некорректной форме
     else:
         category = Category.objects.all()
@@ -96,10 +97,10 @@ def translation_filter(request, template):
         first_news = news[:3]
         news = news[3:]
         return render(request, template,
-                        {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
-                        'key': 'all',
-                        "news_key": 'all', 'day': 'Сегодня',
-                        'is_filter': False})
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False})
 
 
 class Index(View):
@@ -144,5 +145,40 @@ class NewsPage(View):
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
                        'is_filter': False})
+
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'newscard.html')
+
+
+class NewsList(View):
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        first_news = news[:3]
+        news = news[3:]
+        category = Category.objects.all()
+        translations = Translation.objects.all()
+        return render(request, 'news.html',
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False})
+
+    def post(self, request, *args, **kwargs):
+        return translation_filter(request, 'news.html')
+
+
+class TranslationsList(View):
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        first_news = news[:3]
+        news = news[3:]
+        category = Category.objects.all()
+        translations = Translation.objects.all()
+        return render(request, 'translationslist.html',
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False})
+
+    def post(self, request, *args, **kwargs):
+        return translation_filter(request, 'translationslist.html')

@@ -2,7 +2,7 @@
 <div class="streams-margin">
     <section class="translation">
         <h1 class="translation__title">{{ translation_data.name }}</h1>
-        <div class="tranlation__container">
+        <div class="tranlation__container" style="background-image: url('{{ translation_data.preview.url }}')">
             <p class="translation__info_day-n-year translation__info">{{ translation_data.date}}</p>
             <p class="translation__info_hour translation__info">{{ translation_data.time }} (GMT+03:00)</p>
             <h2 class="translation__info_title translation__info bold2">{{ translation_data.name}}</h2>
@@ -19,7 +19,7 @@
             </form>
         </div>
         <div class="translation__members-counter"><img src="{% static 'image/icons8-ñÑGÑ¬G¿ó-24.png' %}" alt="users">
-            <p class="translation__members-count">1</p>
+            <p class="translation__members-count">0</p>
         </div>
         <p class="translation__description">{{ translation_data.category }}</p>
         <form action="" class="post__comment translation__comment">

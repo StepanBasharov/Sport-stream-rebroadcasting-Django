@@ -9,7 +9,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.Index.as_view(), name='index'),
     path('translation/<pk>', views.TranslationPage.as_view(), name='translation'),
-    path('news/<pk>', views.NewsPage.as_view(), name='news_card')
+    path('news/<pk>', views.NewsPage.as_view(), name='news_card'),
+    path('newslist', views.NewsList.as_view(), name='news_list'),
+    path('translationslist', views.TranslationsList.as_view(), name='translations_list')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

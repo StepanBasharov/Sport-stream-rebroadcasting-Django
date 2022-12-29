@@ -3,7 +3,7 @@
 }
 .translations {
   -ms-overflow-style: none;
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
 .translations {
@@ -506,7 +506,7 @@
   .header__register-button {
     color: #207649;
     font-size: 0.1px;
-    background: #207649 url('images/box-arrow-in-right.svg') no-repeat;
+    background: #207649 url('../image/box-arrow-in-right.svg') no-repeat;
     background-size: 70%;
     background-position: 3px center;
     width: 40px;
