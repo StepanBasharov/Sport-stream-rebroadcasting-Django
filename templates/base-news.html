@@ -98,7 +98,11 @@
                     {% if is_filter == False %} {% for translation in translations %}
                     <a href="{% url 'translation' translation.id %}" class="non-decor link-trans">
                         <article class="match">
-                            <div class="match__indicator match__indicator_color_red"></div>
+                            {% if translation.is_live == True %}
+                                <div class="match__indicator match__indicator_color_red"></div>
+                            {% else %}
+                                <div class="match__indicator"></div>
+                            {% endif %}
                             <p class="match__time">{{ translation.time }}</p>
                             <p class="match__team1 teams-font-style">{{ translation.first_team }}</p><img src="{{ translation.first_team_flag.url }}" alt="Флаг команды" class="match__team1-flag" width="30">
                             <p class="match__dash teams-font-style"> - </p>
@@ -109,7 +113,11 @@
                     {% endfor %} {% else %} {% for translation in filtered_translations %}
                     <a href="{% url 'translation' translation.id %}" class="non-decor link-trans">
                         <article class="match">
-                            <div class="match__indicator match__indicator_color_red"></div>
+                            {% if translation.is_live == True %}
+                                <div class="match__indicator match__indicator_color_red"></div>
+                            {% else %}
+                                <div class="match__indicator"></div>
+                            {% endif %}
                             <p class="match__time">{{ translation.time }}</p>
                             <p class="match__team1 teams-font-style">{{ translation.first_team }}</p><img src="{{ translation.first_team_flag.url }}" alt="Флаг команды" class="match__team1-flag" width="30">
                             <p class="match__dash teams-font-style"> - </p>

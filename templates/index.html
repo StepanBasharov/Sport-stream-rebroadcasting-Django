@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}Спортивные трансляции{% endblock title %} {% block content %}
+{% extends "base.html" %} {% load static %} {% block title %}Спортивные трансляции{% endblock title %} {% block content %}
 
     <div class="streams-margin">
         <section class="top-streams">
@@ -7,7 +7,8 @@
                 {% for translation in translations %}
                     <div class="top-streams__elem">
                         <a href="{% url 'translation' translation.id %}" class="top-streams-img"
-                           style="background-image: url('{{ translation.preview.url }}')"></a>
+                           style="background-image: url('{{ translation.preview.url }}')" onmouseover="this.style='background-image: url({% static "image/Group 47-hover.png" %});';"
+                        onmouseout="this.style='background-image: url({{ translation.preview.url }});';"></a>
                         <p class="top-streams__date">{{ translation.date }} <span
                                 class="top-streams__sport">{{ translation.category }}</span></p>
                         {% if translation.is_pay == "Бесплатно" %}

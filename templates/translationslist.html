@@ -1,20 +1,27 @@
-{% extends "base-main.html" %}{% block title %}Трансляции{% endblock title %}
+{% extends "base-main.html" %} {% load static %}{% block title %}Трансляции{% endblock title %}
 
 {% block content %}
     <div class="streams-margin">
-      <section class="translist">
-        <h1 class="translist__title">Трансляции</h1>
-          {% for stream in translations %}
-        <article class="transelem">
-          <a href="{% url 'translation' stream.id %}" class="top-streams-img" style="background-image: url('{{ stream.preview.url }}')"></a>
-          <a href='{% url 'translation' stream.id %}' class="transelem__info non-decor">
-            <p class="transelem__live transelem__live_active">Live</p>
-            <h2 class="transelem__title">{{ stream.name }}</h2>
-            <p class="transelem__description">{{ stream.description }}</p>
-          </a>
-        </article>
-          {% endfor %}
-      </section>
-      <div class="px2"></div>
+        <section class="translist">
+            <h1 class="translist__title">Трансляции</h1>
+            {% for stream in translations %}
+                <article class="transelem">
+                    <a href="{% url 'translation' stream.id %}" class="top-streams-img"
+                       style="background-image: url('{{ stream.preview.url }}')"
+                       onmouseover="this.style='background-image: url({% static "image/Group 47-hover.png" %});';"
+                       onmouseout="this.style='background-image: url({{ stream.preview.url }});';"></a>
+                    <a href='{% url 'translation' stream.id %}' class="transelem__info non-decor">
+                        {% if stream.is_live == True %}
+                            <p class="transelem__live transelem__live_active">Live</p>
+                        {% else %}
+                            <p class="transelem__live"></p>
+                        {% endif %}
+                        <h2 class="transelem__title">{{ stream.name }}</h2>
+                        <p class="transelem__description">{{ stream.description }}</p>
+                    </a>
+                </article>
+            {% endfor %}
+        </section>
+        <div class="px2"></div>
     </div>
 {% endblock content %}

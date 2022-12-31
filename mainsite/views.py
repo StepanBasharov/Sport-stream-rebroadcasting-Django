@@ -182,3 +182,20 @@ class TranslationsList(View):
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationslist.html')
+
+
+class SubPage(View):
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        first_news = news[:3]
+        news = news[3:]
+        category = Category.objects.all()
+        translations = Translation.objects.all()
+        return render(request, 'subscription.html',
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False})
+
+    def post(self, request, *args, **kwargs):
+        return translation_filter(request, 'subscription.html')

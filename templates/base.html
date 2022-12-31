@@ -14,178 +14,214 @@
 </head>
 
 <body class="page">
-    <header class="header">
-        <a href="{% url 'index' %}" class="header__logo">
-            <img src="{% static 'image/LOGO.png' %}" alt="Logo">
-        </a>
+<header class="header">
+    <a href="{% url 'index' %}" class="header__logo">
+        <img src="{% static 'image/LOGO.png' %}" alt="Logo">
+    </a>
 
-        <hav class="header__navigation">
-            <a href="{% url 'news_list' %}" class="header__navigation-element">Новости</a>
-            <a href="{% url 'translations_list' %}" class="header__navigation-element">Трансляции</a>
-            <a href="./subscription.html" class="header__navigation-element">Подписки</a>
-            <a href="./contacts.html" class="header__navigation-element">Контакты</a>
-            <a href="./aboutus.html" class="header__navigation-element">О нас</a>
-        </hav>
+    <hav class="header__navigation">
+        <a href="{% url 'news_list' %}" class="header__navigation-element">Новости</a>
+        <a href="{% url 'translations_list' %}" class="header__navigation-element">Трансляции</a>
+        <a href="./subscription.html" class="header__navigation-element">Подписки</a>
+        <a href="./contacts.html" class="header__navigation-element">Контакты</a>
+        <a href="./aboutus.html" class="header__navigation-element">О нас</a>
+    </hav>
 
-        <div class="hamburger-menu">
-            <input id="menu__toggle" type="checkbox" />
-            <label class="menu__btn" for="menu__toggle">
+    <div class="hamburger-menu">
+        <input id="menu__toggle" type="checkbox"/>
+        <label class="menu__btn" for="menu__toggle">
             <span></span>
         </label>
 
-            <ul class="menu__box">
-                <li><a class="menu__item" href="{% url 'news_list' %}">Новости</a></li>
-                <li><a class="menu__item" href="{% url 'translations_list' %}">Трансляции</a></li>
-                <li><a class="menu__item" href="./subscription.html">Подписки</a></li>
-                <li><a class="menu__item" href="./contacts.html">Контакты</a></li>
-                <li><a class="menu__item" href="./aboutus.html">О нас</a></li>
-            </ul>
-        </div>
+        <ul class="menu__box">
+            <li><a class="menu__item" href="{% url 'news_list' %}">Новости</a></li>
+            <li><a class="menu__item" href="{% url 'translations_list' %}">Трансляции</a></li>
+            <li><a class="menu__item" href="./subscription.html">Подписки</a></li>
+            <li><a class="menu__item" href="./contacts.html">Контакты</a></li>
+            <li><a class="menu__item" href="./aboutus.html">О нас</a></li>
+        </ul>
+    </div>
 
-        <div class="ether">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#616161" class="bi bi-broadcast-pin" viewBox="0 0 16 16">
+    <div class="ether">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#616161" class="bi bi-broadcast-pin"
+             viewBox="0 0 16 16">
             <path d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707zm2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708zm5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708zm2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM6 8a2 2 0 1 1 2.5 1.937V15.5a.5.5 0 0 1-1 0V9.937A2 2 0 0 1 6 8z"/>
         </svg>
+    </div>
+
+    <div class="header__right-items">
+        <a href="./settings.html"><img src="{% static 'image/user_icon.svg' %}" alt="Иконка" class="header__user-icon"></a>
+        <button class="header__register-button">Регистрация</button>
+        <div class="header__search-n-mg-glass">
+            <form action="" class="searching-form">
+                <input type="text" class="header__search" minlength="1" maxlength="56" required>
+                <button class="btn-no-style searching-button"><img src="{% static 'image/magnifying_glass.svg' %}"
+                                                                   alt="Лупа"
+                                                                   class="header__mag-glass"></button>
+            </form>
         </div>
 
-        <div class="header__right-items">
-            <a href="./settings.html"><img src="{% static 'image/user_icon.svg' %}" alt="Иконка" class="header__user-icon"></a>
-            <button class="header__register-button">Регистрация</button>
-            <div class="header__search-n-mg-glass">
-                <form action="" class="searching-form">
-                    <input type="text" class="header__search" minlength="1" maxlength="56" required>
-                    <button class="btn-no-style searching-button"><img src="{% static 'image/magnifying_glass.svg' %}" alt="Лупа"
-                                                                   class="header__mag-glass"></button>
-                </form>
-            </div>
 
+</header>
 
-    </header>
-
-    <main>
-        {% block content %} {% endblock content %}
-        <section class="translations-container">
-            <div class="translations">
-                <h2 class="translations__title">Трансляции</h2>
-                <form class="translations__date-choose" method="post" action="">
-                    {% csrf_token %} {% if day == "Вчера" %}
-                    <button class="translations__date-choose-btn_type_yesterday btn-no-style translations__date-choose-font-style translations__date-choose_active" name="day" value="Вчера_{{ key }}">Вчера
+<main>
+    {% block content %} {% endblock content %}
+    <section class="translations-container">
+        <div class="translations">
+            <h2 class="translations__title">Трансляции</h2>
+            <form class="translations__date-choose" method="post" action="">
+                {% csrf_token %} {% if day == "Вчера" %}
+                <button class="translations__date-choose-btn_type_yesterday btn-no-style translations__date-choose-font-style translations__date-choose_active"
+                        name="day" value="Вчера_{{ key }}">Вчера
                 </button> {% else %}
-                    <button class="translations__date-choose-btn_type_yesterday btn-no-style translations__date-choose-font-style" name="day" value="Вчера_{{ key }}">Вчера
+                <button class="translations__date-choose-btn_type_yesterday btn-no-style translations__date-choose-font-style"
+                        name="day" value="Вчера_{{ key }}">Вчера
                 </button> {% endif %} {% if day == "Сегодня" %}
-                    <button class="translations__date-choose-btn_type_today btn-no-style translations__date-choose-font-style translations__date-choose_active" name="day" value="Cегодня_{{ key }}">Сегодня
+                <button class="translations__date-choose-btn_type_today btn-no-style translations__date-choose-font-style translations__date-choose_active"
+                        name="day" value="Cегодня_{{ key }}">Сегодня
                 </button> {% else %}
-                    <button class="translations__date-choose-btn_type_today btn-no-style translations__date-choose-font-style" name="day" value="Сегодня_{{ key }}">Сегодня
+                <button class="translations__date-choose-btn_type_today btn-no-style translations__date-choose-font-style"
+                        name="day" value="Сегодня_{{ key }}">Сегодня
                 </button> {% endif %} {% if day == "Завтра" %}
-                    <button class="translations__date-choose-btn_type_tomorrow btn-no-style translations__date-choose-font-style translations__date-choose_active" name="day" value="Завтра_{{ key }}">Завтра
+                <button class="translations__date-choose-btn_type_tomorrow btn-no-style translations__date-choose-font-style translations__date-choose_active"
+                        name="day" value="Завтра_{{ key }}">Завтра
                 </button> {% else %}
-                    <button class="translations__date-choose-btn_type_tomorrow btn-no-style translations__date-choose-font-style" name="day" value="Завтра_{{ key }}">Завтра
+                <button class="translations__date-choose-btn_type_tomorrow btn-no-style translations__date-choose-font-style"
+                        name="day" value="Завтра_{{ key }}">Завтра
                 </button> {% endif %}
-                    <input type="date" name="calendar" value="{{ day_date }}" onchange="checkForm(this.form)" class="translations__date-choose-btn_type_calendar btn-no-style translations__date-choose-font-style">
-                </form>
-                <form class="translations__sport-choose" method="post" action="">
-                    {% csrf_token %} {% if key == 'all' %}
-                    <button value="{{ day }}_all" name="sport" class="translations__sport-chose-btn_type_all btn-no-style translations__sport-choose-btn-font-style translations__sport-choose_active">
+                <input type="date" name="calendar" value="{{ day_date }}" onchange="checkForm(this.form)"
+                       class="translations__date-choose-btn_type_calendar btn-no-style translations__date-choose-font-style">
+            </form>
+            <form class="translations__sport-choose" method="post" action="">
+                {% csrf_token %} {% if key == 'all' %}
+                <button value="{{ day }}_all" name="sport"
+                        class="translations__sport-chose-btn_type_all btn-no-style translations__sport-choose-btn-font-style translations__sport-choose_active">
                     Все
                 </button> {% else %}
-                    <button value="{{ day }}_all" name="sport" class="translations__sport-chose-btn_type_all btn-no-style translations__sport-choose-btn-font-style">
+                <button value="{{ day }}_all" name="sport"
+                        class="translations__sport-chose-btn_type_all btn-no-style translations__sport-choose-btn-font-style">
                     Все
                 </button> {% endif %} {% for cat in category %} {% if key == cat.name %}
-                    <button value="{{ day }}_{{ cat.name }}" name="sport" class="translations__sport-chose-btn_type_football btn-no-style translations__sport-choose-btn-font-style translations__sport-choose_active">{{ cat.name }}</button> {% else %}
-                    <button value="{{ day }}_{{ cat.name }}" name="sport" class="translations__sport-chose-btn_type_football btn-no-style translations__sport-choose-btn-font-style">{{ cat.name }}</button> {% endif %} {% endfor %}
+                <button value="{{ day }}_{{ cat.name }}" name="sport"
+                        class="translations__sport-chose-btn_type_football btn-no-style translations__sport-choose-btn-font-style translations__sport-choose_active">{{ cat.name }}</button>
+            {% else %}
+                <button value="{{ day }}_{{ cat.name }}" name="sport"
+                        class="translations__sport-chose-btn_type_football btn-no-style translations__sport-choose-btn-font-style">{{ cat.name }}</button>
+            {% endif %} {% endfor %}
 
-                </form>
-                <div class="matches">
-                    <h2 class="matches__title">Товарищеские матчи 2020-2022</h2>
-                    {% if is_filter == False %} {% for translation in translations %}
+            </form>
+            <div class="matches">
+                <h2 class="matches__title">Товарищеские матчи 2020-2022</h2>
+                {% if is_filter == False %} {% for translation in translations %}
                     <a href="{% url 'translation' translation.id %}" class="non-decor link-trans">
                         <article class="match">
-                            <div class="match__indicator match__indicator_color_red"></div>
+                            {% if translation.is_live == True %}
+                                <div class="match__indicator match__indicator_color_red"></div>
+                            {% else %}
+                                <div class="match__indicator"></div>
+                            {% endif %}
                             <p class="match__time">{{ translation.time }}</p>
-                            <p class="match__team1 teams-font-style">{{ translation.first_team }}</p><img src="{{ translation.first_team_flag.url }}" alt="Флаг команды" class="match__team1-flag" width="30">
+                            <p class="match__team1 teams-font-style">{{ translation.first_team }}</p><img
+                                src="{{ translation.first_team_flag.url }}" alt="Флаг команды" class="match__team1-flag"
+                                width="30">
                             <p class="match__dash teams-font-style"> - </p>
-                            <img src="{{ translation.second_team_flag.url }}" alt="Флаг команды" class="match__team2-flag" width="30">
+                            <img src="{{ translation.second_team_flag.url }}" alt="Флаг команды"
+                                 class="match__team2-flag" width="30">
                             <p class="match__team2 teams-font-style">{{ translation.second_team }}</p>
                         </article>
                     </a>
-                    {% endfor %} {% else %} {% for translation in filtered_translations %}
+                {% endfor %} {% else %} {% for translation in filtered_translations %}
                     <a href="{% url 'translation' translation.id %}" class="non-decor link-trans">
                         <article class="match">
-                            <div class="match__indicator match__indicator_color_red"></div>
+                            {% if translation.is_live == True %}
+                                <div class="match__indicator match__indicator_color_red"></div>
+                            {% else %}
+                                <div class="match__indicator"></div>
+                            {% endif %}
                             <p class="match__time">{{ translation.time }}</p>
-                            <p class="match__team1 teams-font-style">{{ translation.first_team }}</p><img src="{{ translation.first_team_flag.url }}" alt="Флаг команды" class="match__team1-flag" width="30">
+                            <p class="match__team1 teams-font-style">{{ translation.first_team }}</p><img
+                                src="{{ translation.first_team_flag.url }}" alt="Флаг команды" class="match__team1-flag"
+                                width="30">
                             <p class="match__dash teams-font-style"> - </p>
-                            <img src="{{ translation.second_team_flag.url }}" alt="Флаг команды" class="match__team2-flag" width="30">
+                            <img src="{{ translation.second_team_flag.url }}" alt="Флаг команды"
+                                 class="match__team2-flag" width="30">
                             <p class="match__team2 teams-font-style">{{ translation.second_team }}</p>
                         </article>
                     </a>
-                    {% endfor %} {% endif %}
-                </div>
-                <a href="./translationslist.html" class="non-decor">
-                    <button class="translations__list-btn btn-no-style">
+                {% endfor %} {% endif %}
+            </div>
+            <a href="./translationslist.html" class="non-decor">
+                <button class="translations__list-btn btn-no-style">
                     <p class="translations__list-btn-text">Список трансляций</p>
                 </button>
-                </a>
-            </div>
-        </section>
-        {% block content2 %} {% endblock content2 %}
-    </main>
+            </a>
+        </div>
+    </section>
+    {% block content2 %} {% endblock content2 %}
+</main>
 
-    <section class="popup-reg">
-        <div class="popup-reg__container">
-            <button class="popup__close btn-no-style" type="button"><img src="{% static 'image/Close_Icon.svg' %}" alt="крестик"
+<section class="popup-reg">
+    <div class="popup-reg__container">
+        <button class="popup__close btn-no-style" type="button"><img src="{% static 'image/Close_Icon.svg' %}"
+                                                                     alt="крестик"
                                                                      class="popup__close-image"></button>
-            <h2 class="popup-reg__title">Зарегистрироваться</h2>
-            <form action="" class="popup-reg__form">
-                <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
-                <input type="text" placeholder="Имя" class="popup-reg__input_type_name popup-reg__form-styles" required>
-                <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles" required>
-                <input type="password" placeholder="Подтверждение пароля" class="popup-reg__input_type_password popup-reg__form-styles" required>
-                <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles" required>
-                <button class="popup-reg__reg-btn btn-no-style">Регистрация</button>
-                <button class="popup-reg__login btn-no-style">Уже есть аккаунт?</button>
-            </form>
-        </div>
-    </section>
-    <section class="popup-log">
-        <div class="popup-log__container">
-            <button class="popup__close btn-no-style popup__close2" type="button"><img src="{% static 'image/Close_Icon.svg' %}"
-                                                                                   alt="крестик"
-                                                                                   class="popup__close-image"></button>
-            <h2 class="popup-reg__title">Войти</h2>
-            <form action="" class="popup-log__form">
-                <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
-                <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles" required>
-                <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles" required>
-                <button class="popup-reg__reg-btn btn-no-style popup-log__log-btn">Войти</button>
-                <button class="btn-no-style popup-log__register">Регистрация</button>
-            </form>
-        </div>
-    </section>
-    <footer class="footer">
-        <a href="{% url 'index' %}"><img src="{% static 'image/LOGO_footer.svg' %}" alt="logo" class="footer__logo"></a>
-        <hav class="header__navigation footer__navigation">
-            <a href="{% url 'news_list' %}" class="header__navigation-element">Новости</a>
-            <a href="{% url 'translations_list' %}" class="header__navigation-element">Трансляции</a>
-            <a href="./subscription.html" class="header__navigation-element">Подписки</a>
-            <a href="./contacts.html" class="header__navigation-element">Контакты</a>
-            <a href="./aboutus.html" class="header__navigation-element">О нас</a>
-        </hav>
-        <div></div>
-    </footer>
-    <script src="{% static 'js/script.js' %}"></script>
-    <script>
-        function checkForm(form) {
-            let value = form.calendar.value + "_{{ key }}";
-            console.log(form.day.value);
-            form.calendar.type = "text";
-            form.calendar.value = value;
-            form.submit();
-            form.calendar.type = "date";
-            //form.calendar.value = "";
-            return false;
-        }
-    </script>
+        <h2 class="popup-reg__title">Зарегистрироваться</h2>
+        <form action="" method="post" class="popup-reg__form">
+            <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
+            <input type="text" placeholder="Имя" class="popup-reg__input_type_name popup-reg__form-styles" required>
+            <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles"
+                   required>
+            <input type="password" placeholder="Подтверждение пароля"
+                   class="popup-reg__input_type_password popup-reg__form-styles" required>
+            <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles"
+                   required>
+            <button class="popup-reg__reg-btn btn-no-style">Регистрация</button>
+            <button class="popup-reg__login btn-no-style">Уже есть аккаунт?</button>
+        </form>
+    </div>
+</section>
+<section class="popup-log">
+    <div class="popup-log__container">
+        <button class="popup__close btn-no-style popup__close2" type="button"><img
+                src="{% static 'image/Close_Icon.svg' %}"
+                alt="крестик"
+                class="popup__close-image"></button>
+        <h2 class="popup-reg__title">Войти</h2>
+        <form action="" class="popup-log__form">
+            <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
+            <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles"
+                   required>
+            <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles"
+                   required>
+            <button class="popup-reg__reg-btn btn-no-style popup-log__log-btn">Войти</button>
+            <button class="btn-no-style popup-log__register">Регистрация</button>
+        </form>
+    </div>
+</section>
+<footer class="footer">
+    <a href="{% url 'index' %}"><img src="{% static 'image/LOGO_footer.svg' %}" alt="logo" class="footer__logo"></a>
+    <hav class="header__navigation footer__navigation">
+        <a href="{% url 'news_list' %}" class="header__navigation-element">Новости</a>
+        <a href="{% url 'translations_list' %}" class="header__navigation-element">Трансляции</a>
+        <a href="./subscription.html" class="header__navigation-element">Подписки</a>
+        <a href="./contacts.html" class="header__navigation-element">Контакты</a>
+        <a href="./aboutus.html" class="header__navigation-element">О нас</a>
+    </hav>
+    <div></div>
+</footer>
+<script src="{% static 'js/script.js' %}"></script>
+<script>
+    function checkForm(form) {
+        let value = form.calendar.value + "_{{ key }}";
+        console.log(form.day.value);
+        form.calendar.type = "text";
+        form.calendar.value = value;
+        form.submit();
+        form.calendar.type = "date";
+        //form.calendar.value = "";
+        return false;
+    }
+</script>
 </body>
 
 </html>

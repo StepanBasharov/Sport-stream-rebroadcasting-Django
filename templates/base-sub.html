@@ -62,7 +62,7 @@
 
     </header>
 
-    <main class="main">
+    <main class="main-in-subs">
         {% block content %} {% endblock content %}
         <section class="translations-container">
             <div class="translations">
@@ -144,7 +144,7 @@
             <button class="popup__close btn-no-style" type="button"><img src="{% static 'image/Close_Icon.svg' %}" alt="крестик"
                                                                      class="popup__close-image"></button>
             <h2 class="popup-reg__title">Зарегистрироваться</h2>
-            <form action="" class="popup-reg__form">
+            <form action="" method="post" class="popup-reg__form">
                 <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
                 <input type="text" placeholder="Имя" class="popup-reg__input_type_name popup-reg__form-styles" required>
                 <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles" required>
