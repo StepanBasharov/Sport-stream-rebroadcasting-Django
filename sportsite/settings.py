@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 CSRF_TRUSTED_ORIGINS = ['https://*.ngrok.io','https://*.127.0.0.1']
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,6 +71,8 @@ TEMPLATES = [
         },
     },
 ]
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
 
 WSGI_APPLICATION = 'sportsite.wsgi.application'
 

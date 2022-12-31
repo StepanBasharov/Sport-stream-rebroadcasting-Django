@@ -1,7 +1,13 @@
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+
 from .models import *
 from django.views import View
+from django.contrib.auth.views import LoginView
 from datetime import datetime, timedelta
+from .forms import *
 
 
 def translation_filter(request, template):
@@ -10,6 +16,7 @@ def translation_filter(request, template):
     day = request.POST.get('day')
     calendar = request.POST.get('calendar')
     category_news = request.POST.get('news_filter')
+    login = LoginForm()
 
     global data_date
     # Проверяем, по какой форме пользователь проводил фильтрацию
@@ -31,7 +38,7 @@ def translation_filter(request, template):
                            'first_news': first_news,
                            'key': 'all',
                            "news_key": news_key, 'day': 'Сегодня',
-                           'is_filter': False})
+                           'is_filter': False, 'login_form': login})
         else:
             # Проверяем, по какому запросы пришли валидные данные
             try:
@@ -88,7 +95,7 @@ def translation_filter(request, template):
                           {data_key: data, "category": category_list, "translations": translations, 'news': news,
                            'first_news': first_news,
                            'filtered_translations': filtered_translations, 'key': category, 'day': date,
-                           "day_date": date_filter, 'is_filter': True, "news_key": news_key})
+                           "day_date": date_filter, 'is_filter': True, "news_key": news_key, 'login_form': login})
     # Если POST запрос прошел по некорректной форме
     else:
         category = Category.objects.all()
@@ -100,7 +107,26 @@ def translation_filter(request, template):
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False})
+                       'is_filter': False, 'login_form': login})
+
+
+class Login(View):
+    def post(self, request, *args, **kwargs):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(username=cd['username'], password=cd['password'])
+            if user is not None:
+                print(1)
+                if user.is_active:
+                    login(request, user)
+                    return redirect('index')
+                else:
+                    return HttpResponse('Disabled account')
+            else:
+                return HttpResponse('Invalid login')
+        else:
+            return HttpResponse('Invalid Form')
 
 
 class Index(View):
@@ -110,11 +136,12 @@ class Index(View):
         news = News.objects.all()
         first_news = news[:3]
         news = news[3:]
+        login = LoginForm()
         return render(request, 'index.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False})
+                       'is_filter': False, 'login_form': login})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'index.html')

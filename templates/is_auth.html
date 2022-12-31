@@ -1,0 +1,11 @@
+{% extends "base-main.html" %} {% load static %}{% block title %}Вход в аккаунт{% endblock title %}
+
+{% block content %}
+    <div class="streams-margin">
+        {% if request.user.is_authenticated %}
+            <h1>Вы вошли в аккаунт {{ request.user.username }}</h1>
+        {% else %}
+            <h1>Неверный логин или пароль</h1>
+        {% endif %}
+    </div>
+{% endblock content %}
