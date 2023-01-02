@@ -1,11 +1,6 @@
 {% extends "base-main.html" %} {% load static %}{% block title %}Трансляции{% endblock title %}
 
 {% block content %}
-    {% if request.user.is_authenticated %}
-        AUTHED
-    {% else %}
-        GUEST
-    {% endif %}
     <div class="streams-margin">
         <section class="translist">
             <h1 class="translist__title">Трансляции</h1>

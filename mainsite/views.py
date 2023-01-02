@@ -152,11 +152,12 @@ class TranslationPage(View):
         data = Translation.objects.get(id=pk)
         category = Category.objects.all()
         translations = Translation.objects.all()
+        login = LoginForm()
         return render(request, 'translationcard.html',
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False})
+                       'is_filter': False, 'login_form': login})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationcard.html')
@@ -167,11 +168,12 @@ class NewsPage(View):
         data = News.objects.get(id=pk)
         category = Category.objects.all()
         translations = Translation.objects.all()
+        login = LoginForm()
         return render(request, 'newscard.html',
                       {'news_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False})
+                       'is_filter': False, 'login_form': login})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'newscard.html')
@@ -184,11 +186,12 @@ class NewsList(View):
         news = news[3:]
         category = Category.objects.all()
         translations = Translation.objects.all()
+        login = LoginForm()
         return render(request, 'news.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False})
+                       'is_filter': False, 'login_form': login})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'news.html')
@@ -201,11 +204,12 @@ class TranslationsList(View):
         news = news[3:]
         category = Category.objects.all()
         translations = Translation.objects.all()
+        login = LoginForm()
         return render(request, 'translationslist.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False})
+                       'is_filter': False, 'login_form': login})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationslist.html')
@@ -218,11 +222,12 @@ class SubPage(View):
         news = news[3:]
         category = Category.objects.all()
         translations = Translation.objects.all()
+        login = LoginForm()
         return render(request, 'subscription.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False})
+                       'is_filter': False, 'login_form': login})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'subscription.html')
