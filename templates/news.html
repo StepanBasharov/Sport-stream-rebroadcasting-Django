@@ -49,11 +49,17 @@
 
     <div class="header__right-items">
         <a href="./settings.html"><img src="{% static 'image/user_icon.svg' %}" alt="Иконка" class="header__user-icon"></a>
-        <button class="header__register-button">Регистрация</button>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}">
+            <button class="header__register-button">Выход из {{ request.user.username }}</button></a>
+        {% else %}
+           <button class="header__register-button">Регистрация</button>
+        {% endif %}
         <div class="header__search-n-mg-glass">
             <form action="" class="searching-form">
                 <input type="text" class="header__search" minlength="1" maxlength="56" required>
-                <button class="btn-no-style searching-button"><img src="{% static 'image/magnifying_glass.svg' %}" alt="Лупа"
+                <button class="btn-no-style searching-button"><img src="{% static 'image/magnifying_glass.svg' %}"
+                                                                   alt="Лупа"
                                                                    class="header__mag-glass"></button>
             </form>
         </div>
@@ -217,7 +223,8 @@
 
 <section class="popup-reg">
     <div class="popup-reg__container">
-        <button class="popup__close btn-no-style" type="button"><img src="{% static 'image/Close_Icon.svg' %}" alt="крестик"
+        <button class="popup__close btn-no-style" type="button"><img src="{% static 'image/Close_Icon.svg' %}"
+                                                                     alt="крестик"
                                                                      class="popup__close-image"></button>
         <h2 class="popup-reg__title">Зарегистрироваться</h2>
         <form action="" class="popup-reg__form">
@@ -236,16 +243,16 @@
 </section>
 <section class="popup-log">
     <div class="popup-log__container">
-        <button class="popup__close btn-no-style popup__close2" type="button"><img src="{% static 'image/Close_Icon.svg' %}"
-                                                                                   alt="крестик"
-                                                                                   class="popup__close-image"></button>
+        <button class="popup__close btn-no-style popup__close2" type="button"><img
+                src="{% static 'image/Close_Icon.svg' %}"
+                alt="крестик"
+                class="popup__close-image"></button>
         <h2 class="popup-reg__title">Войти</h2>
-        <form action="" class="popup-log__form">
+        <form action="login" method="post" class="popup-log__form">
+            {% csrf_token %}
             <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
-            <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles"
-                   required>
-            <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles"
-                   required>
+            {{ login_form.username }}
+            {{ login_form.password }}
             <button class="popup-reg__reg-btn btn-no-style popup-log__log-btn">Войти</button>
             <button class="btn-no-style popup-log__register">Регистрация</button>
         </form>

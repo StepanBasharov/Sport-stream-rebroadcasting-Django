@@ -16,7 +16,8 @@ def translation_filter(request, template):
     day = request.POST.get('day')
     calendar = request.POST.get('calendar')
     category_news = request.POST.get('news_filter')
-    login = LoginForm()
+    login_form = LoginForm()
+    register = UserRegistrationForm()
 
     global data_date
     # Проверяем, по какой форме пользователь проводил фильтрацию
@@ -38,7 +39,7 @@ def translation_filter(request, template):
                            'first_news': first_news,
                            'key': 'all',
                            "news_key": news_key, 'day': 'Сегодня',
-                           'is_filter': False, 'login_form': login})
+                           'is_filter': False, 'login_form': login_form, 'reg_form': register})
         else:
             # Проверяем, по какому запросы пришли валидные данные
             try:
@@ -95,7 +96,8 @@ def translation_filter(request, template):
                           {data_key: data, "category": category_list, "translations": translations, 'news': news,
                            'first_news': first_news,
                            'filtered_translations': filtered_translations, 'key': category, 'day': date,
-                           "day_date": date_filter, 'is_filter': True, "news_key": news_key, 'login_form': login})
+                           "day_date": date_filter, 'is_filter': True, "news_key": news_key, 'login_form': login_form,
+                           'reg_form': register})
     # Если POST запрос прошел по некорректной форме
     else:
         category = Category.objects.all()
@@ -107,7 +109,7 @@ def translation_filter(request, template):
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
 
 class Login(View):
@@ -122,11 +124,36 @@ class Login(View):
                     login(request, user)
                     return redirect('index')
                 else:
-                    return HttpResponse('Disabled account')
+                    login_form = LoginForm()
+                    reg_form = UserRegistrationForm()
+                    return render(request, 'reg-trabl.html', {'login_form': login_form, 'reg_form': reg_form, 'message': "Ваш аккаунт отключен"})
             else:
-                return HttpResponse('Invalid login')
+                login_form = LoginForm()
+                reg_form = UserRegistrationForm()
+                return render(request, 'reg-trabl.html',
+                              {'login_form': login_form, 'reg_form': reg_form, 'message': "Такого пользователя не существует"})
         else:
-            return HttpResponse('Invalid Form')
+            return HttpResponse('500')
+
+
+class Register(View):
+    def post(self, request, *args, **kwargs):
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            # Create a new user object but avoid saving it yet
+            new_user = user_form.save(commit=False)
+            # Set the chosen password
+            new_user.set_password(user_form.cleaned_data['password'])
+            # Save the User object
+            new_user.save()
+            cd = user_form.cleaned_data
+            user = authenticate(username=cd['username'], password=cd['password'])
+            login(request, user)
+            return redirect('index')
+        else:
+            login_form = LoginForm()
+            reg_form = UserRegistrationForm()
+            return render(request, 'reg-trabl.html', {'login_form': login_form, 'reg_form': reg_form, 'message': "Введены неккоректные данные"})
 
 
 class Index(View):
@@ -136,12 +163,13 @@ class Index(View):
         news = News.objects.all()
         first_news = news[:3]
         news = news[3:]
-        login = LoginForm()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
         return render(request, 'index.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'index.html')
@@ -152,12 +180,13 @@ class TranslationPage(View):
         data = Translation.objects.get(id=pk)
         category = Category.objects.all()
         translations = Translation.objects.all()
-        login = LoginForm()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
         return render(request, 'translationcard.html',
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationcard.html')
@@ -168,12 +197,13 @@ class NewsPage(View):
         data = News.objects.get(id=pk)
         category = Category.objects.all()
         translations = Translation.objects.all()
-        login = LoginForm()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
         return render(request, 'newscard.html',
                       {'news_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'newscard.html')
@@ -186,12 +216,13 @@ class NewsList(View):
         news = news[3:]
         category = Category.objects.all()
         translations = Translation.objects.all()
-        login = LoginForm()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
         return render(request, 'news.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'news.html')
@@ -204,12 +235,13 @@ class TranslationsList(View):
         news = news[3:]
         category = Category.objects.all()
         translations = Translation.objects.all()
-        login = LoginForm()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
         return render(request, 'translationslist.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationslist.html')
@@ -222,12 +254,13 @@ class SubPage(View):
         news = news[3:]
         category = Category.objects.all()
         translations = Translation.objects.all()
-        login = LoginForm()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
         return render(request, 'subscription.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'subscription.html')

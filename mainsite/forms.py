@@ -20,9 +20,30 @@ class UserRegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email')
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'class': "popup-reg__input_type_name popup-reg__form-styles",
+                'placeholder': 'Имя'
+            }),
+            'email': forms.TextInput(attrs={
+                'class': "popup-reg__input_type_password popup-reg__form-styles",
+                'placeholder': 'email',
+                'type': 'email'
+            })
+        }
 
     def clean_password2(self):
+        obscene_words = [
+            'хуй',
+            'пизда',
+            'уебок',
+            'ебать',
+        ]
         cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
+        if cd['password'] != cd['password2'] or cd['password'] == cd['username'] or cd['password'] == cd['email']:
             raise forms.ValidationError('Passwords don\'t match.')
+        for word in obscene_words:
+            if word in cd['username'].lower():
+                raise forms.ValidationError("obscene words")
         return cd['password2']
+
