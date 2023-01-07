@@ -17,7 +17,8 @@ urlpatterns = [
     path('subscription', views.SubPage.as_view(), name='subs'),
     path('login', views.Login.as_view(), name='login'),
     path(r'^logout/$', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
-    path('registration', views.Register.as_view(), name='registration')
+    path('registration', views.Register.as_view(), name='registration'),
+    path('activate/<uidb64>/<token>', views.activate, name='activate'),
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),

@@ -6,3 +6,5 @@ pycodestyle==2.10.0
 sqlparse==0.4.3
 tomli==2.0.1
 tzdata==2022.7
+six~=1.16.0
+django-adminlte-3==0.1.6

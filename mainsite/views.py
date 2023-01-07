@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -8,6 +8,14 @@ from django.views import View
 from django.contrib.auth.views import LoginView
 from datetime import datetime, timedelta
 from .forms import *
+
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import EmailMessage
+
+from .token import account_activation_token
 
 
 def translation_filter(request, template):
@@ -112,6 +120,45 @@ def translation_filter(request, template):
                        'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
 
+def activate_mail(request, user, email):
+    print("Test Go 3")
+    mail_subject = 'Активируйте аккаунт для доступа к контенту.'
+    message = render_to_string('email_activate.html', {
+        'user': user.username,
+        'domain': get_current_site(request).domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http'
+    })
+    email = EmailMessage(mail_subject, message, to=[email])
+    print("Test Go 4")
+    email.send()
+    print("Test Go5")
+
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('index')
+
+    else:
+        login_form = LoginForm()
+        reg_form = UserRegistrationForm()
+        return render(request, 'reg-trabl.html',
+                      {'login_form': login_form, 'reg_form': reg_form, 'message': "Неккоректная ссылка."})
+
+    return redirect('index')
+
+
 class Login(View):
     def post(self, request, *args, **kwargs):
         form = LoginForm(request.POST)
@@ -119,19 +166,20 @@ class Login(View):
             cd = form.cleaned_data
             user = authenticate(username=cd['username'], password=cd['password'])
             if user is not None:
-                print(1)
                 if user.is_active:
                     login(request, user)
                     return redirect('index')
                 else:
                     login_form = LoginForm()
                     reg_form = UserRegistrationForm()
-                    return render(request, 'reg-trabl.html', {'login_form': login_form, 'reg_form': reg_form, 'message': "Ваш аккаунт отключен"})
+                    return render(request, 'reg-trabl.html',
+                                  {'login_form': login_form, 'reg_form': reg_form, 'message': "Ваш аккаунт отключен"})
             else:
                 login_form = LoginForm()
                 reg_form = UserRegistrationForm()
                 return render(request, 'reg-trabl.html',
-                              {'login_form': login_form, 'reg_form': reg_form, 'message': "Такого пользователя не существует"})
+                              {'login_form': login_form, 'reg_form': reg_form,
+                               'message': "Такого пользователя не существует"})
         else:
             return HttpResponse('500')
 
@@ -140,20 +188,26 @@ class Register(View):
     def post(self, request, *args, **kwargs):
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
-            # Create a new user object but avoid saving it yet
             new_user = user_form.save(commit=False)
-            # Set the chosen password
             new_user.set_password(user_form.cleaned_data['password'])
-            # Save the User object
+            new_user.is_active = False
             new_user.save()
             cd = user_form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
-            login(request, user)
-            return redirect('index')
+            print("Test Go 1")
+            activate_mail(request, new_user, cd['email'])
+            # user = authenticate(username=cd['username'], password=cd['password'])
+            # login(request, user)
+            print("Test Go 2")
+            login_form = LoginForm()
+            register = UserRegistrationForm()
+            return render(request, 'reg-trabl.html', {
+                'message': f'Дорогой {cd["username"]}! Вам нужно подтвердить вашу почту, пожалуйста, проверьте почтовый ящик {cd["email"]}',
+                'login_form': login_form, 'reg_form': register})
         else:
             login_form = LoginForm()
             reg_form = UserRegistrationForm()
-            return render(request, 'reg-trabl.html', {'login_form': login_form, 'reg_form': reg_form, 'message': "Введены неккоректные данные"})
+            return render(request, 'reg-trabl.html',
+                          {'login_form': login_form, 'reg_form': reg_form, 'message': "Введены неккоректные данные"})
 
 
 class Index(View):
