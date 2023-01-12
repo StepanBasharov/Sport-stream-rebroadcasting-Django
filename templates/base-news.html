@@ -153,7 +153,7 @@
                     </a>
                 {% endfor %} {% endif %}
             </div>
-            <a href="./translationslist.html" class="non-decor">
+            <a href="{% url 'translations_list' %}" class="non-decor">
                 <button class="translations__list-btn btn-no-style">
                     <p class="translations__list-btn-text">Список трансляций</p>
                 </button>
@@ -168,15 +168,13 @@
                                                                      alt="крестик"
                                                                      class="popup__close-image"></button>
         <h2 class="popup-reg__title">Зарегистрироваться</h2>
-        <form action="" class="popup-reg__form">
+        <form action="{% url 'registration' %}" method="post" class="popup-reg__form">
+            {% csrf_token %}
             <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
-            <input type="text" placeholder="Имя" class="popup-reg__input_type_name popup-reg__form-styles" required>
-            <input type="password" placeholder="Пароль" class="popup-reg__input_type_password popup-reg__form-styles"
-                   required>
-            <input type="password" placeholder="Подтверждение пароля"
-                   class="popup-reg__input_type_password popup-reg__form-styles" required>
-            <input type="email" placeholder="e-mail" class="popup-reg__input_type_email popup-reg__form-styles"
-                   required>
+            {{ reg_form.username }}
+            {{ reg_form.email }}
+            {{ reg_form.password }}
+            {{ reg_form.password2 }}
             <button class="popup-reg__reg-btn btn-no-style">Регистрация</button>
             <button class="popup-reg__login btn-no-style">Уже есть аккаунт?</button>
         </form>

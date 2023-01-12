@@ -8,22 +8,50 @@
             <img src="{{ news_data.preview.url }}" alt="#" class="post__img">
             <div class="post__info">
                 <p class="post__img-source">{{ news_data.photo_author }}</p>
-                <div>
-                    <button class="post__like btn-no-style post__btns">{{ news_data.likes }}
-                        <img src="{% static 'image/Mask grouplike1.svg' %}" alt="#">
-                    </button>
-                    <button class="post__dislike btn-no-style post__btns"> {{ news_data.dislikes }}
-                        <img src="{% static 'image/Mask grouplike2.svg' %}" alt="#">
-                    </button>
+                <div class="send-like-dislike">
+                    {% if request.user.is_authenticated %}
+                        <form action="{% url 'like' news_data.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="post__like btn-no-style post__btns">{{ news_data.likes.all.count }}
+                                <img src="{% static 'image/Mask grouplike1.svg' %}" alt="#">
+                            </button>
+                        </form>
+                        <form action="{% url 'dislike' news_data.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="post__dislike btn-no-style post__btns"> {{ news_data.dislikes.all.count }}
+                                <img src="{% static 'image/Mask grouplike2.svg' %}" alt="#">
+                            </button>
+                        </form>
+                    {% else %}
+
+                    {% endif %}
                 </div>
             </div>
             <p class="post__text">{{ news_data.text }}
             </p>
-            <form action="" class="post__comment">
-          <textarea name="comment" id="comment" cols="30" rows="10" class="post__textarea"
-                    placeholder="Оставьте свой комментарий..."></textarea>
+
+
+            <section class="comments">
+            <h2 class="comments__title">Комментарии</h2>
+                {% for i in comments %}
+
+                    <article class="comments__comment">
+                        <h2 class="comments__name">{{ i.author }}</h2>
+                        <p class="comments__comment-text">{{ i.text }}</p>
+                    </article>
+                {% endfor %}
+            </section>
+            {% if request.user.is_authenticated %}
+            <form action="{% url 'comment' news_data.pk %}" class="post__comment" method="post">
+                {% csrf_token %}
+                <textarea name="comment" id="comment" cols="30" rows="10" class="post__textarea"
+                          placeholder="Оставьте свой комментарий..."></textarea>
                 <button class="post__comment-btn btn-no-style">Отправить</button>
             </form>
+            {% else %}
+            {% endif %}
         </section>
         <div class="px2"></div>
     </div>

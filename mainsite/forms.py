@@ -47,3 +47,7 @@ class UserRegistrationForm(forms.ModelForm):
                 raise forms.ValidationError("obscene words")
         return cd['password2']
 
+
+class NewsCommetnsForm(forms.ModelForm):
+    pass
+

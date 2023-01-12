@@ -317,7 +317,23 @@
 .match__indicator_color_red {
   background: #DC0000;
 }
+.teams-font-style {
+  align-self: center;
+}
 
+.match__time {
+  margin: 0 0 0 0;
+  align-self: center;
+  width: 10%;
+}
+
+.match__team1 {
+  width: 30%;
+}
+
+.match__team2 {
+  width: 30%;
+}
 .teams-font-style {
   font-style: normal;
   font-weight: 400;
@@ -347,6 +363,9 @@
 
 .match__team2 {
   margin-left: 7px;
+}
+.match__indicator {
+  flex-shrink: 0;
 }
 
 .translations__list-btn {
@@ -688,6 +707,11 @@
   margin-right: 21px;
 }
 
+.send-like-dislike {
+  display: flex;
+  flex-direction: row;
+}
+
 .post__text {
   font-weight: 400;
   font-size: 14px;
@@ -696,6 +720,40 @@
   margin: 0 0 25px 0;
   outline: 0;
   outline-offset: 0;
+}
+.comments {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+
+.comments__title {
+  width: 95%;
+  margin: 50px 0 30px;
+}
+
+.comments__comment {
+  width: calc(60% - 70px);
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.3);
+  padding-top: 30px;
+  padding-left: 40px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.comments__name {
+  font-size: 28px;
+  line-height: 32px;
+  margin: 0;
+}
+
+.comments__comment-text {
+  font-size: 16px;
+  line-height: 20px;
+  margin-top: 20px;
 }
 
 .post__comment {
@@ -1407,7 +1465,6 @@
   }
 
 
-
   .header__right-items {
     padding-bottom: 20px;
     margin-right: auto;
@@ -1658,21 +1715,21 @@
     opacity: 0;
   }
 
-  #menu__toggle:checked~.menu__btn>span {
+  #menu__toggle:checked ~ .menu__btn > span {
     transform: rotate(45deg);
   }
 
-  #menu__toggle:checked~.menu__btn>span::before {
+  #menu__toggle:checked ~ .menu__btn > span::before {
     top: 0;
     transform: rotate(0);
   }
 
-  #menu__toggle:checked~.menu__btn>span::after {
+  #menu__toggle:checked ~ .menu__btn > span::after {
     top: 0;
     transform: rotate(90deg);
   }
 
-  #menu__toggle:checked~.menu__box {
+  #menu__toggle:checked ~ .menu__box {
     visibility: visible;
     left: 0;
   }
@@ -1691,9 +1748,9 @@
     z-index: 1;
   }
 
-  .menu__btn>span,
-  .menu__btn>span::before,
-  .menu__btn>span::after {
+  .menu__btn > span,
+  .menu__btn > span::before,
+  .menu__btn > span::after {
     display: block;
     position: absolute;
 
@@ -1705,12 +1762,12 @@
     transition-duration: .25s;
   }
 
-  .menu__btn>span::before {
+  .menu__btn > span::before {
     content: '';
     top: -8px;
   }
 
-  .menu__btn>span::after {
+  .menu__btn > span::after {
     content: '';
     top: 8px;
   }

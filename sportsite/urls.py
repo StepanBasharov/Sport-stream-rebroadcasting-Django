@@ -19,6 +19,12 @@ urlpatterns = [
     path(r'^logout/$', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     path('registration', views.Register.as_view(), name='registration'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
+    path('news/<pk>/like/', views.AddLike.as_view(), name='like'),
+    path('news/<pk>/dislike/', views.AddDislike.as_view(), name='dislike'),
+    path('news/<pk>/comment', views.NewNewsComment.as_view(), name='comment'),
+    path('translation/<pk>/comment', views.NewTranslationComment.as_view(), name='chat'),
+    path('profile', views.UserProfile.as_view(), name='profile'),
+    path('rename', views.rename, name='rename')
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),

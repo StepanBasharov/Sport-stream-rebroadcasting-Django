@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -30,17 +31,48 @@ class Translation(models.Model):
 
 
 class News(models.Model):
-    name = models.CharField(max_length=100)
-    text = models.TextField(max_length=30000)
-    photo_author = models.TextField(max_length=100, default="Неизвестен")
+    name = models.CharField("Название", max_length=100)
+    text = models.TextField("Текс", max_length=30000)
+    photo_author = models.TextField("Автор фото", max_length=100, default="Неизвестен")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    preview = models.ImageField(upload_to='images')
-    date = models.DateField(null=True)
+    preview = models.ImageField("Фото", upload_to='images')
+    date = models.DateField("Дата", null=True)
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
 
     def __str__(self):
         return self.name
 
 
 class Subscription(models.Model):
-    sub_name = models.CharField(max_length=100)
-    sup_price = models.CharField(max_length=100)
+    sub_name = models.CharField("Название подписки", max_length=100)
+    sup_price = models.CharField("Цена", max_length=100)
+
+    def __str__(self):
+        return self.sub_name
+
+
+class NewsComment(models.Model):
+    text = models.TextField("Текст Коментария", max_length=500)
+    author = models.CharField("Автор", max_length=100)
+    news = models.ForeignKey(News, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.author
+
+
+class TranslationComment(models.Model):
+    text = models.TextField("Текс Коментария", max_length=500)
+    author = models.CharField("Автор", max_length=100)
+    translation = models.ForeignKey(Translation, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.author
+
+
+class UserSubs(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    sub = models.ForeignKey(Subscription, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username

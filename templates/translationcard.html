@@ -22,10 +22,26 @@
             <p class="translation__members-count">0</p>
         </div>
         <p class="translation__description">{{ translation_data.category }}</p>
-        <form action="" class="post__comment translation__comment">
-            <textarea name="comment" id="comment" cols="30" rows="10" class="post__textarea" placeholder="Оставьте свой комментарий..."></textarea>
-            <button class="post__comment-btn btn-no-style">Отправить</button>
-        </form>
+        <section class="comments">
+            <h2 class="comments__title">Комментарии</h2>
+                {% for i in comments %}
+
+                    <article class="comments__comment">
+                        <h2 class="comments__name">{{ i.author }}</h2>
+                        <p class="comments__comment-text">{{ i.text }}</p>
+                    </article>
+                {% endfor %}
+            </section>
+            {% if request.user.is_authenticated %}
+            <form action="{% url 'chat' translation_data.pk %}" class="post__comment" method="post">
+                {% csrf_token %}
+                <textarea name="comment" id="comment" cols="30" rows="10" class="post__textarea"
+                          placeholder="Оставьте свой комментарий..."></textarea>
+                <button class="post__comment-btn btn-no-style">Отправить</button>
+            </form>
+            {% else %}
+            {% endif %}
+        </section>
     </section>
     <div class="px2"></div>
 </div>

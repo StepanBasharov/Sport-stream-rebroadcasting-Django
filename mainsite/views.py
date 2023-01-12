@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login, get_user_model
-from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .models import *
 from django.views import View
@@ -159,6 +160,17 @@ def activate(request, uidb64, token):
     return redirect('index')
 
 
+def rename(request):
+    if request.method == "POST":
+        new_name = request.POST.get('username')
+        user = User.objects.get(username=request.user)
+        user.username = new_name
+        user.save()
+        return redirect('profile')
+    else:
+        return redirect('profile')
+
+
 class Login(View):
     def post(self, request, *args, **kwargs):
         form = LoginForm(request.POST)
@@ -188,16 +200,18 @@ class Register(View):
     def post(self, request, *args, **kwargs):
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
+            login_form = LoginForm()
+            register = UserRegistrationForm()
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.is_active = False
             new_user.save()
             cd = user_form.cleaned_data
-            print("Test Go 1")
+            if cd['email'] in User.objects.filter(is_active=True).values_list('email', flat=True):
+                return render(request, 'reg-trabl.html', {
+                    'message': f'Дорогой {cd["username"]}! Почта {cd["email"]} уже используется другим пользователем!',
+                    'login_form': login_form, 'reg_form': register})
             activate_mail(request, new_user, cd['email'])
-            # user = authenticate(username=cd['username'], password=cd['password'])
-            # login(request, user)
-            print("Test Go 2")
             login_form = LoginForm()
             register = UserRegistrationForm()
             return render(request, 'reg-trabl.html', {
@@ -207,7 +221,8 @@ class Register(View):
             login_form = LoginForm()
             reg_form = UserRegistrationForm()
             return render(request, 'reg-trabl.html',
-                          {'login_form': login_form, 'reg_form': reg_form, 'message': "Введены неккоректные данные"})
+                          {'login_form': login_form, 'reg_form': reg_form,
+                           'message': "Введены неккоректные данные\n(Бранные слова, Совпадение пароля и логина, Совпадени пароля и почты)"})
 
 
 class Index(View):
@@ -232,6 +247,7 @@ class Index(View):
 class TranslationPage(View):
     def get(self, request, pk, *args, **kwargs):
         data = Translation.objects.get(id=pk)
+        comments = TranslationComment.objects.filter(translation__name=data.name)
         category = Category.objects.all()
         translations = Translation.objects.all()
         login_form = LoginForm()
@@ -240,7 +256,7 @@ class TranslationPage(View):
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationcard.html')
@@ -249,6 +265,7 @@ class TranslationPage(View):
 class NewsPage(View):
     def get(self, request, pk, *args, **kwargs):
         data = News.objects.get(id=pk)
+        comments = NewsComment.objects.filter(news__name=data.name)
         category = Category.objects.all()
         translations = Translation.objects.all()
         login_form = LoginForm()
@@ -257,7 +274,7 @@ class NewsPage(View):
                       {'news_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'newscard.html')
@@ -318,3 +335,144 @@ class SubPage(View):
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'subscription.html')
+
+
+class AddLike(LoginRequiredMixin, View):
+
+    def post(self, request, pk, *args, **kwargs):
+        if request.user.is_authenticated:
+            post = News.objects.get(pk=pk)
+
+            is_dislike = False
+
+            for dislike in post.dislikes.all():
+                if dislike == request.user:
+                    is_dislike = True
+                    break
+
+            if is_dislike:
+                post.dislikes.remove(request.user)
+
+            is_like = False
+
+            for like in post.likes.all():
+                if like == request.user:
+                    is_like = True
+                    break
+
+            if not is_like:
+                post.likes.add(request.user)
+
+            if is_like:
+                post.likes.remove(request.user)
+
+            return HttpResponseRedirect(reverse('news_card', args=[str(pk)]))
+        else:
+            return redirect('news_list')
+
+
+class AddDislike(LoginRequiredMixin, View):
+
+    def post(self, request, pk, *args, **kwargs):
+        if request.user.is_authenticated:
+            post = News.objects.get(pk=pk)
+
+            is_like = False
+
+            for like in post.likes.all():
+                if like == request.user:
+                    is_like = True
+                    break
+
+            if is_like:
+                post.likes.remove(request.user)
+
+            is_dislike = False
+
+            for dislike in post.dislikes.all():
+                if dislike == request.user:
+                    is_dislike = True
+                    break
+
+            if not is_dislike:
+                post.dislikes.add(request.user)
+
+            if is_dislike:
+                post.dislikes.remove(request.user)
+
+            return HttpResponseRedirect(reverse('news_card', args=[str(pk)]))
+        else:
+            return redirect('news_list')
+
+
+class NewNewsComment(View):
+    def post(self, request, pk, *args, **kwargs):
+        if request.user.is_authenticated:
+            comment = request.POST.get('comment')
+            obscene_words = [
+                'хуй',
+                'пизда',
+                'уебок',
+                'ебать',
+                'выеб',
+                'выёб',
+            ]
+            for word in obscene_words:
+                if word in comment.lower():
+                    return HttpResponseRedirect(reverse('news_card', args=[str(pk)]))
+            new_comment = NewsComment(
+                author=request.user,
+                text=comment,
+                news=News.objects.get(pk=pk)
+            )
+            new_comment.save()
+            return HttpResponseRedirect(reverse('news_card', args=[str(pk)]))
+
+
+class NewTranslationComment(View):
+    def post(self, request, pk, *args, **kwargs):
+        if request.user.is_authenticated:
+            comment = request.POST.get('comment')
+            obscene_words = [
+                'хуй',
+                'пизда',
+                'уебок',
+                'ебать',
+                'выеб',
+                'выёб',
+            ]
+            for word in obscene_words:
+                if word in comment.lower():
+                    return HttpResponseRedirect(reverse('translation', args=[str(pk)]))
+            new_comment = TranslationComment(
+                author=request.user,
+                text=comment,
+                translation=Translation.objects.get(pk=pk)
+            )
+            new_comment.save()
+            return HttpResponseRedirect(reverse('translation', args=[str(pk)]))
+
+
+class UserProfile(View):
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        first_news = news[:3]
+        news = news[3:]
+        category = Category.objects.all()
+        translations = Translation.objects.all()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
+        subscription = UserSubs.objects.get(user=request.user)
+        subscription = subscription.sub
+        return render(request, 'settings.html',
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register, 'subs': subscription})
+
+    def post(self, request, *args, **kwargs):
+        return translation_filter(request, 'settings.html')
+
+
+
+
