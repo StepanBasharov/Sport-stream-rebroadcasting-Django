@@ -8,6 +8,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
 
 class Translation(models.Model):
     is_pay_type = (('Платно', 'Платно'),
@@ -24,15 +28,20 @@ class Translation(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     link = models.CharField("Ссылка на поток", max_length=200)
     description = models.TextField("Описание", max_length=3000, default="Прямая трансляция")
+    permission = models.ForeignKey('Subscription', on_delete=models.CASCADE, null=True)
     is_live = models.BooleanField("LIVE", default=False)
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Трансляция"
+        verbose_name_plural = "Трансляции"
+
 
 class News(models.Model):
     name = models.CharField("Название", max_length=100)
-    text = models.TextField("Текс", max_length=30000)
+    text = models.TextField("Текст", max_length=30000)
     photo_author = models.TextField("Автор фото", max_length=100, default="Неизвестен")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     preview = models.ImageField("Фото", upload_to='images')
@@ -43,6 +52,10 @@ class News(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Новость"
+        verbose_name_plural = "Новости"
+
 
 class Subscription(models.Model):
     sub_name = models.CharField("Название подписки", max_length=100)
@@ -51,23 +64,35 @@ class Subscription(models.Model):
     def __str__(self):
         return self.sub_name
 
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+
 
 class NewsComment(models.Model):
-    text = models.TextField("Текст Коментария", max_length=500)
+    text = models.TextField("Текст комментария", max_length=500)
     author = models.CharField("Автор", max_length=100)
     news = models.ForeignKey(News, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.author
 
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии к новостям"
+
 
 class TranslationComment(models.Model):
-    text = models.TextField("Текс Коментария", max_length=500)
+    text = models.TextField("Текст коментария", max_length=500)
     author = models.CharField("Автор", max_length=100)
     translation = models.ForeignKey(Translation, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.author
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии к трансляциям"
 
 
 class UserSubs(models.Model):
@@ -76,3 +101,7 @@ class UserSubs(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"

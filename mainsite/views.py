@@ -122,7 +122,6 @@ def translation_filter(request, template):
 
 
 def activate_mail(request, user, email):
-    print("Test Go 3")
     mail_subject = 'Активируйте аккаунт для доступа к контенту.'
     message = render_to_string('email_activate.html', {
         'user': user.username,
@@ -132,9 +131,7 @@ def activate_mail(request, user, email):
         'protocol': 'https' if request.is_secure() else 'http'
     })
     email = EmailMessage(mail_subject, message, to=[email])
-    print("Test Go 4")
     email.send()
-    print("Test Go5")
 
 
 def activate(request, uidb64, token):
@@ -148,6 +145,12 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        sub = Subscription.objects.get(sub_name='Базовая')
+        new_sub = UserSubs(
+            user=user,
+            sub=sub
+        )
+        new_sub.save()
         login(request, user)
         return redirect('index')
 
