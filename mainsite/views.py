@@ -252,6 +252,7 @@ class TranslationPage(View):
         data = Translation.objects.get(id=pk)
         comments = TranslationComment.objects.filter(translation__name=data.name)
         category = Category.objects.all()
+        user_data = UserSubs.objects.get(user=request.user)
         translations = Translation.objects.all()
         login_form = LoginForm()
         register = UserRegistrationForm()
@@ -259,7 +260,8 @@ class TranslationPage(View):
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments,
+                       'user_data': user_data})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationcard.html')
@@ -475,7 +477,3 @@ class UserProfile(View):
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'settings.html')
-
-
-
-

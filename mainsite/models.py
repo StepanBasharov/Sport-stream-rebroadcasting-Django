@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 
 class Category(models.Model):
@@ -98,6 +99,7 @@ class TranslationComment(models.Model):
 class UserSubs(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sub = models.ForeignKey(Subscription, on_delete=models.CASCADE)
+    end_sub = models.DateField("Конец действия подписки", null=True)
 
     def __str__(self):
         return self.user.username
