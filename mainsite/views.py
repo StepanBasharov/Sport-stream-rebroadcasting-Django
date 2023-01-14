@@ -174,6 +174,30 @@ def rename(request):
         return redirect('profile')
 
 
+def new_mail(request):
+    if request.method == "POST":
+        new_email = request.POST.get('email')
+        user = User.objects.get(username=request.user)
+        user.email = new_email
+        user.save()
+        return redirect('profile')
+    else:
+        return redirect('profile')
+
+
+def set_new_password(request):
+    if request.method == "POST":
+        user = request.user
+        if len(request.POST['password']) < 5:
+            return redirect('profile')
+        user.set_password(request.POST['password'])
+        user.save()
+        login(request, user)
+        return redirect('index')
+    else:
+        return redirect('profile')
+
+
 class Login(View):
     def post(self, request, *args, **kwargs):
         form = LoginForm(request.POST)
@@ -467,13 +491,20 @@ class UserProfile(View):
         translations = Translation.objects.all()
         login_form = LoginForm()
         register = UserRegistrationForm()
-        subscription = UserSubs.objects.get(user=request.user)
-        subscription = subscription.sub
-        return render(request, 'settings.html',
-                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
-                       'key': 'all',
-                       "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login_form, 'reg_form': register, 'subs': subscription})
+        if request.user.is_authenticated:
+            subscription = UserSubs.objects.get(user=request.user)
+            subscription = subscription.sub
+            return render(request, 'settings.html',
+                          {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                           'key': 'all',
+                           "news_key": 'all', 'day': 'Сегодня',
+                           'is_filter': False, 'login_form': login_form, 'reg_form': register, 'subs': subscription})
+        else:
+            return render(request, 'settings.html',
+                          {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                           'key': 'all',
+                           "news_key": 'all', 'day': 'Сегодня',
+                           'is_filter': False, 'login_form': login_form, 'reg_form': register})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'settings.html')

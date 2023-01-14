@@ -20,7 +20,7 @@
     <hav class="header__navigation">
         <a href="{% url 'news_list' %}" class="header__navigation-element">Новости</a>
         <a href="{% url 'translations_list' %}" class="header__navigation-element">Трансляции</a>
-        <a href="./subscription.html" class="header__navigation-element">Подписки</a>
+        <a href="{% url 'subs' %}" class="header__navigation-element">Подписки</a>
         <a href="./contacts.html" class="header__navigation-element">Контакты</a>
         <a href="./aboutus.html" class="header__navigation-element">О нас</a>
     </hav>
@@ -34,7 +34,7 @@
         <ul class="menu__box">
             <li><a class="menu__item" href="{% url 'news_list' %}">Новости</a></li>
             <li><a class="menu__item" href="{% url 'translations_list' %}">Трансляции</a></li>
-            <li><a class="menu__item" href="./subscription.html">Подписки</a></li>
+            <li><a class="menu__item" href="{% url 'subs' %}">Подписки</a></li>
             <li><a class="menu__item" href="./contacts.html">Контакты</a></li>
             <li><a class="menu__item" href="./aboutus.html">О нас</a></li>
         </ul>
@@ -48,7 +48,7 @@
     </div>
 
     <div class="header__right-items">
-        <a href="./settings.html"><img src="{% static 'image/user_icon.svg' %}" alt="Иконка" class="header__user-icon"></a>
+        <a href="{% url 'profile' %}"><img src="{% static 'image/user_icon.svg' %}" alt="Иконка" class="header__user-icon"></a>
         {% if request.user.is_authenticated %}
             <a href="{% url 'logout' %}">
             <button class="header__register-button">Выход из {{ request.user.username }}</button></a>

@@ -24,7 +24,9 @@ urlpatterns = [
     path('news/<pk>/comment', views.NewNewsComment.as_view(), name='comment'),
     path('translation/<pk>/comment', views.NewTranslationComment.as_view(), name='chat'),
     path('profile', views.UserProfile.as_view(), name='profile'),
-    path('rename', views.rename, name='rename')
+    path('rename', views.rename, name='rename'),
+    path('changemail', views.new_mail, name='changemail'),
+    path('resetpassword', views.set_new_password, name='resetpassword')
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),

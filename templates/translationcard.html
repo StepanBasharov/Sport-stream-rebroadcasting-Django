@@ -6,6 +6,7 @@
             <p class="translation__info_day-n-year translation__info">{{ translation_data.date}}</p>
             <p class="translation__info_hour translation__info">{{ translation_data.time }} (GMT+03:00)</p>
             <h2 class="translation__info_title translation__info bold2">{{ translation_data.name}}</h2>
+            <!-- подписка данная у пользователя не равна подписке которая должна быть на этой трансляции-->
             {% if user_data.sub != translation_data.permission %}
             <h1>Надобно подписочку оформить</h1>
             {% endif %}
@@ -27,24 +28,22 @@
         <p class="translation__description">{{ translation_data.category }}</p>
         <section class="comments">
             <h2 class="comments__title">Комментарии</h2>
-                {% for i in comments %}
+            {% for i in comments %}
 
-                    <article class="comments__comment">
-                        <h2 class="comments__name">{{ i.author }}</h2>
-                        <p class="comments__comment-text">{{ i.text }}</p>
-                    </article>
-                {% endfor %}
-            </section>
-            {% if request.user.is_authenticated %}
-            <form action="{% url 'chat' translation_data.pk %}" class="post__comment" method="post">
-                {% csrf_token %}
-                <textarea name="comment" id="comment" cols="30" rows="10" class="post__textarea"
-                          placeholder="Оставьте свой комментарий..."></textarea>
-                <button class="post__comment-btn btn-no-style">Отправить</button>
-            </form>
-            {% else %}
-            {% endif %}
+            <article class="comments__comment">
+                <h2 class="comments__name">{{ i.author }}</h2>
+                <p class="comments__comment-text">{{ i.text }}</p>
+            </article>
+            {% endfor %}
         </section>
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'chat' translation_data.pk %}" class="post__comment" method="post">
+            {% csrf_token %}
+            <textarea name="comment" id="comment" cols="30" rows="10" class="post__textarea" placeholder="Оставьте свой комментарий..."></textarea>
+            <button class="post__comment-btn btn-no-style">Отправить</button>
+        </form>
+        {% else %} {% endif %}
+    </section>
     </section>
     <div class="px2"></div>
 </div>

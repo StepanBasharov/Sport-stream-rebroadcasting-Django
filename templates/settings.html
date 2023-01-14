@@ -2,6 +2,7 @@
 {% block content %}
     <div class="streams-margin">
       <section class="settings">
+          {% if request.user.is_authenticated %}
         <h1 class="settings__title">Настройки</h1>
         <form action="rename" method="post" class="settings__name">
             {% csrf_token %}
@@ -9,21 +10,26 @@
           <input type="text" name="username" placeholder="{{ request.user }}" class="settings__input">
           <button class="settings__change-btn btn-no-style" type="submit">Сменить</button>
         </form>
-        <form action="" class="settings__email">
+        <form action="changemail" method="post" class="settings__email">
+            {% csrf_token %}
           <p class="settings__title_email settings_title-fonts">E-mail</p>
-          <input type="email" placeholder="{{ request.user.email }}" class="settings__input">
+          <input type="email" name="email" placeholder="{{ request.user.email }}" class="settings__input">
           <button class="settings__change-btn btn-no-style">Сменить</button>
         </form>
         <form action="" class="settings__sub">
           <p class="settings__title_sub settings_title-fonts">Подписка</p>
-          <input type="text" placeholder="{{ subs }}" class="settings__input">
-          <button class="settings__change-btn btn-no-style">Сменить</button>
+          <input type="text" placeholder="{{ subs }}" readonly class="settings__input">
+          <a href="{% url 'subs' %}" class="settings__change-btn btn-no-style">Сменить</a>
         </form>
-        <form action="" class="settings__pass">
+        <form action="resetpassword" method="post" class="settings__pass">
+            {% csrf_token %}
           <p class="settings__title_pass settings_title-fonts">Пароль</p>
-          <input type="password" placeholder="****************" readonly class="settings__input">
+          <input type="password" name="password" placeholder="****************" class="settings__input">
           <button class="settings__change-btn btn-no-style">Сменить</button>
         </form>
+          {% else %}
+          <h1 class="settings__title">Войдите в аккаунт</h1>
+          {% endif %}
       <div class="px2"></div>
     </div>
 {% endblock content %}
