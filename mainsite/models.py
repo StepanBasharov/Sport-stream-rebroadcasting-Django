@@ -31,6 +31,7 @@ class Translation(models.Model):
     description = models.TextField("Описание", max_length=3000, default="Прямая трансляция")
     permission = models.ForeignKey('Subscription', on_delete=models.CASCADE, null=True)
     is_live = models.BooleanField("LIVE", default=False)
+    online = models.IntegerField("Смотрят сейчас", default=0)
 
     def __str__(self):
         return self.name
@@ -59,8 +60,12 @@ class News(models.Model):
 
 
 class Subscription(models.Model):
+    sub_category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     sub_name = models.CharField("Название подписки", max_length=100)
-    sup_price = models.CharField("Цена", max_length=100)
+    sup_price_month = models.CharField("Цена за месяц", max_length=100, null=True)
+    sub_price_year = models.CharField("Цена за год", max_length=100, null=True)
+    sub_price_year_month = models.CharField("Цена за месяц при годовой подписке", max_length=100, null=True)
+    sub_price_year_discount = models.CharField("Скидка при покупке годовой подписки", max_length=100, null=True)
 
     def __str__(self):
         return self.sub_name

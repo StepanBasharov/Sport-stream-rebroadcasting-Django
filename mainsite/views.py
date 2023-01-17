@@ -1,3 +1,5 @@
+from asyncio import sleep
+
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
@@ -7,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 from .models import *
 from django.views import View
 from django.contrib.auth.views import LoginView
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from .forms import *
 
 from django.template.loader import render_to_string
@@ -279,13 +281,30 @@ class TranslationPage(View):
         user_data = UserSubs.objects.get(user=request.user)
         translations = Translation.objects.all()
         login_form = LoginForm()
+        sub_end_date = user_data.end_sub
+        end_sub = False
+        if sub_end_date == None:
+            end_sub = True
+        else:
+            if date.today() > sub_end_date:
+                end_sub = True
         register = UserRegistrationForm()
+        if_ultimate = str(user_data.sub)
+        try:
+            request.GET.get('user')
+            data.online += 1
+            data.save()
+            sleep(1)
+            data.online = 1
+            data.save()
+        except Exception:
+            pass
         return render(request, 'translationcard.html',
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
                        'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments,
-                       'user_data': user_data})
+                       'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationcard.html')
@@ -355,12 +374,13 @@ class SubPage(View):
         category = Category.objects.all()
         translations = Translation.objects.all()
         login_form = LoginForm()
+        subs = Subscription.objects.all()
         register = UserRegistrationForm()
         return render(request, 'subscription.html',
                       {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
-                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register, 'subs': subs})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'subscription.html')

@@ -1,36 +1,44 @@
 {% extends 'base-sub.html' %}
+{% block title %}
+    Подписки
+{% endblock title %}
 {% block content %}
     <div class="streams-margin">
         <section class="subs">
-            <h1 class="subs__title">Подписки</h1>
-            <div class="subs__container">
-                <div class="subs__1month sub">
-                    <div class="subs__1month-info">
-                        <p class="subs__1month-title">1 месяц</p>
-                        <p class="subs__price"><b class="bold">299р</b>/мес</p>
-                        <p class="subs__condition">Оплата ежемесячно</p>
+            {% for sub in subs %}
+                {% if forloop.first %}
+                {% else %}
+                    <h1 class="subs__title">{{ sub.sub_name }}</h1>
+                    <div class="subs__container">
+                        <div class="subs__1month sub">
+                            <div class="subs__1month-info">
+                                <p class="subs__1month-title">1 месяц</p>
+                                <p class="subs__price"><b class="bold">{{ sub.sup_price_month }}р</b>/мес</p>
+                                <p class="subs__condition">Оплата ежемесячно</p>
+                            </div>
+                            <form action="" class="subs__1month-form">
+                                <button class="subs__1month-buy-btn btn-no-style">Купить подписку</button>
+                            </form>
+                        </div>
+                        <div class="subs__1month sub">
+                            <div class="subs__1month-info">
+                                <p class="subs__condition2">При единовременной оплате за 12 месяцев <span
+                                        class="transelem__live_active">{{ sub.sub_price_year }}р</span></p>
+                                <p class="subs__12month-title">12 месяцев</p>
+                                <p class="subs__price subs__price-2"><b class="bold">{{ sub.sub_price_year_month }}р</b>/мес</p>
+                            </div>
+                            <form action="" class="subs__1month-form">
+                                <button class="subs__1month-buy-btn btn-no-style subs__12month-buy-btn">Купить
+                                    подписку
+                                </button>
+                            </form>
+                            <p class="subs__12month-sale">-{{ sub.sub_price_year_discount }}%</p>
+                        </div>
                     </div>
-                    <form action="" class="subs__1month-form">
-                        <button class="subs__1month-buy-btn btn-no-style">Купить подписку</button>
-                    </form>
-                </div>
-                <div class="subs__1month sub">
-                    <div class="subs__1month-info">
-                        <p class="subs__condition2">При единовременной оплате за 12 месяцев <span
-                                class="transelem__live_active">2990р</span></p>
-                        <p class="subs__12month-title">12 месяцев</p>
-                        <p class="subs__price subs__price-2"><b class="bold">299р</b>/мес</p>
-                    </div>
-                    <form action="" class="subs__1month-form">
-                        <button class="subs__1month-buy-btn btn-no-style subs__12month-buy-btn">Купить подписку</button>
-                    </form>
-                    <p class="subs__12month-sale">-17%</p>
-                </div>
-            </div>
-            <p class="subs__user-agreement">При оформлении подписки, вы соглашаетесь с условиями <a href="#"
-                                                                                                    class="transelem__live_active bold2 non-decor">Пользовательского
-                соглашения</a></p>
+                    <p class="subs__user-agreement">При оформлении подписки, вы соглашаетесь с условиями <a href="#"
+                                                                                                            class="transelem__live_active bold2 non-decor">Пользовательского
+                        соглашения</a></p>
+                {% endif %}
+            {% endfor %}
         </section>
-        <div class="px2"></div>
-    </div>
 {% endblock content %}
