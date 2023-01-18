@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://*.ngrok.io', 'https://*.127.0.0.1']
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'adminlte3',
     'adminlte3_theme',
@@ -40,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainsite',
+    
 
 ]
-
+ASGI_APPLICATION = 'sportsite.asgi.application'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -74,7 +76,8 @@ TEMPLATES = [
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
-WSGI_APPLICATION = 'sportsite.wsgi.application'
+
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

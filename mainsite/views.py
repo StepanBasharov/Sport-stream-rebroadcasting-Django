@@ -290,21 +290,12 @@ class TranslationPage(View):
                 end_sub = True
         register = UserRegistrationForm()
         if_ultimate = str(user_data.sub)
-        try:
-            request.GET.get('user')
-            data.online += 1
-            data.save()
-            sleep(1)
-            data.online = 1
-            data.save()
-        except Exception:
-            pass
         return render(request, 'translationcard.html',
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
                        'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments,
-                       'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub})
+                       'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub, 'pk': pk})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationcard.html')

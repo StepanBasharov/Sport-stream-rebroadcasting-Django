@@ -8,3 +8,4 @@ tomli==2.0.1
 tzdata==2022.7
 six~=1.16.0
 django-adminlte-3==0.1.6
+channels~=3.0.5

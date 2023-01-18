@@ -20,13 +20,15 @@
                         </button>
                     </div>
                 {% elif user_data.sub.sub_category == translation_data.category or if_ultimate == "Ultimate" and end_sub == False%}
-                    <script>
-                        setInterval(function () {
-                            const Http = new XMLHttpRequest();
-                            const url = '{{ request.path }}?user={{ request.user }}';
-                            Http.open("GET", url);
-                            Http.send();
-                        }, 500);
+                    <script type="text/javascript">
+                        let url = `ws://${window.location.host}/ws/socket-server/{{ pk }}/`
+                        const viewStream = new WebSocket(url)
+                        viewStream.onmessage = function(e){
+                            let data = JSON.parse(e.data);
+                            console.log("DATA: ", data);
+
+                        }
+
                     </script>
                 {% endif %}
             </div>
