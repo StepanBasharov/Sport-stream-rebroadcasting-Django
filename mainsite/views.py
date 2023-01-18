@@ -278,24 +278,31 @@ class TranslationPage(View):
         data = Translation.objects.get(id=pk)
         comments = TranslationComment.objects.filter(translation__name=data.name)
         category = Category.objects.all()
-        user_data = UserSubs.objects.get(user=request.user)
         translations = Translation.objects.all()
         login_form = LoginForm()
-        sub_end_date = user_data.end_sub
-        end_sub = False
-        if sub_end_date == None:
-            end_sub = True
-        else:
-            if date.today() > sub_end_date:
-                end_sub = True
         register = UserRegistrationForm()
-        if_ultimate = str(user_data.sub)
+        if request.user.is_authenticated:
+            user_data = UserSubs.objects.get(user=request.user)
+            sub_end_date = user_data.end_sub
+            end_sub = False
+            if sub_end_date == None:
+                end_sub = True
+            else:
+                if date.today() > sub_end_date:
+                    end_sub = True
+            if_ultimate = str(user_data.sub)
+            return render(request, 'translationcard.html',
+                          {'translation_data': data, "category": category, "translations": translations,
+                           'key': 'all',
+                           "news_key": 'all', 'day': 'Сегодня',
+                           'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments,
+                           'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub, 'pk': pk})
         return render(request, 'translationcard.html',
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',
                        "news_key": 'all', 'day': 'Сегодня',
                        'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments,
-                       'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub, 'pk': pk})
+                       'pk': pk})
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'translationcard.html')
