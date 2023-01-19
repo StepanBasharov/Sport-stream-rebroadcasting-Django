@@ -291,8 +291,11 @@ class Login(View):
 
 
 class Register(View):
-    @method_decorator(ratelimit(key='ip', rate='10/s', method='POST'))
+    @method_decorator(ratelimit(key='ip', rate='10/m', method='POST'))
     def post(self, request, *args, **kwargs):
+        was_limited = getattr(request, 'limited', False)
+        if was_limited:
+            return redirect('index')
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
             login_form = LoginForm()
@@ -519,8 +522,11 @@ class AddDislike(LoginRequiredMixin, View):
 
 
 class NewNewsComment(View):
-    @method_decorator(ratelimit(key='ip', rate='5/s', method='POST'))
+    @method_decorator(ratelimit(key='ip', rate='20/m', method='POST'))
     def post(self, request, pk, *args, **kwargs):
+        was_limited = getattr(request, 'limited', False)
+        if was_limited:
+            return redirect('index')
         if request.user.is_authenticated:
             comment = request.POST.get('comment')
             obscene_words = [
@@ -544,8 +550,11 @@ class NewNewsComment(View):
 
 
 class NewTranslationComment(View):
-    @method_decorator(ratelimit(key='ip', rate='5/s', method='POST'))
+    @method_decorator(ratelimit(key='ip', rate='20/m', method='POST'))
     def post(self, request, pk, *args, **kwargs):
+        was_limited = getattr(request, 'limited', False)
+        if was_limited:
+            return redirect('index')
         if request.user.is_authenticated:
             comment = request.POST.get('comment')
             obscene_words = [
