@@ -21,8 +21,8 @@
         <a href="{% url 'news_list' %}" class="header__navigation-element">Новости</a>
         <a href="{% url 'translations_list' %}" class="header__navigation-element">Трансляции</a>
         <a href="{% url 'subs' %}" class="header__navigation-element">Подписки</a>
-        <a href="./contacts.html" class="header__navigation-element">Контакты</a>
-        <a href="./aboutus.html" class="header__navigation-element">О нас</a>
+        <a href="{% url 'contacts' %}" class="header__navigation-element">Контакты</a>
+        <a href="{% url 'about' %}" class="header__navigation-element">О нас</a>
     </hav>
 
     <div class="hamburger-menu">
@@ -35,8 +35,8 @@
             <li><a class="menu__item" href="{% url 'news_list' %}">Новости</a></li>
             <li><a class="menu__item" href="{% url 'translations_list' %}">Трансляции</a></li>
             <li><a class="menu__item" href="{% url 'subs' %}">Подписки</a></li>
-            <li><a class="menu__item" href="./contacts.html">Контакты</a></li>
-            <li><a class="menu__item" href="./aboutus.html">О нас</a></li>
+            <li><a class="menu__item" href="{% url 'contacts' %}l">Контакты</a></li>
+            <li><a class="menu__item" href="{% url 'about' %}">О нас</a></li>
         </ul>
     </div>
 
@@ -56,8 +56,8 @@
            <button class="header__register-button">Регистрация</button>
         {% endif %}
         <div class="header__search-n-mg-glass">
-            <form action="" class="searching-form">
-                <input type="text" class="header__search" minlength="1" maxlength="56" required>
+            <form action="{% url 'search' %}" method="get" class="searching-form">
+                <input type="text" name="search" class="header__search" minlength="1" maxlength="56" required>
                 <button class="btn-no-style searching-button"><img src="{% static 'image/magnifying_glass.svg' %}"
                                                                    alt="Лупа"
                                                                    class="header__mag-glass"></button>
@@ -200,11 +200,11 @@
 <footer class="footer">
     <a href="{% url 'index' %}"><img src="{% static 'image/LOGO_footer.svg' %}" alt="logo" class="footer__logo"></a>
     <hav class="header__navigation footer__navigation">
-        <a href="./news.html" class="header__navigation-element">Новости</a>
-        <a href="./translationslist.html" class="header__navigation-element">Трансляции</a>
-        <a href="./subscription.html" class="header__navigation-element">Подписки</a>
-        <a href="./contacts.html" class="header__navigation-element">Контакты</a>
-        <a href="./aboutus.html" class="header__navigation-element">О нас</a>
+        <a href="{% url 'news_list' %}" class="header__navigation-element">Новости</a>
+        <a href="{% url 'translations_list' %}" class="header__navigation-element">Трансляции</a>
+        <a href="{% url 'subs' %}" class="header__navigation-element">Подписки</a>
+        <a href="{% url 'contacts' %}" class="header__navigation-element">Контакты</a>
+        <a href="{% url 'about' %}" class="header__navigation-element">О нас</a>
     </hav>
     <div></div>
 </footer>

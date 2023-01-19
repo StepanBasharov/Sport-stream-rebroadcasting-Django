@@ -69,7 +69,7 @@
 
 </header>
 
-<main class="main">
+<main class="main main-in-search">
     {% block content %} {% endblock content %}
     <section class="translations-container">
         <div class="translations">
@@ -190,7 +190,7 @@
                 alt="крестик"
                 class="popup__close-image"></button>
         <h2 class="popup-reg__title">Войти</h2>
-        <form action="{% url 'login' %}" method="post" class="popup-log__form">
+        <form action="login" method="post" class="popup-log__form">
             {% csrf_token %}
             <button class="popup-reg__google btn-no-style">Войти через <b>Google +</b></button>
             {{ login_form.username }}

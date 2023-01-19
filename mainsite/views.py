@@ -4,12 +4,14 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.template import RequestContext
 from django.urls import reverse_lazy, reverse
 
 from .models import *
 from django.views import View
 from django.contrib.auth.views import LoginView
 from datetime import datetime, timedelta, date
+import datetime as for_date
 from .forms import *
 
 from django.template.loader import render_to_string
@@ -74,6 +76,8 @@ def translation_filter(request, template):
             filter_time = None
             if date == 'Сегодня':
                 filter_time = today
+            elif date == 'Cегодня':
+                filter_time = today
             elif date == "Вчера":
                 filter_time = today - timedelta(days=1)
             elif date == "Завтра":
@@ -97,18 +101,77 @@ def translation_filter(request, template):
             if request.build_absolute_uri().split('/')[-2] == "translation":
                 data = Translation.objects.get(id=request.build_absolute_uri().split('/')[-1])
                 data_key = "translation_data"
+                comments = TranslationComment.objects.filter(translation__name=data.name)
+                if request.user.is_authenticated:
+                    user_data = UserSubs.objects.get(user=request.user)
+                    sub_end_date = user_data.end_sub
+                    end_sub = False
+                    if sub_end_date == None:
+                        end_sub = True
+                    else:
+                        if for_date.date.today() > sub_end_date:
+                            end_sub = True
+                    if_ultimate = str(user_data.sub)
+                    return render(request, 'translationcard.html',
+                                  {'translation_data': data, "category": category_list, "translations": translations,
+                                   'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub,
+                                   'pk': request.build_absolute_uri().split('/')[-1],
+                                   'filtered_translations': filtered_translations, 'key': category, 'day': date,
+                                   "day_date": date_filter, 'is_filter': True, "news_key": news_key,
+                                   'login_form': login_form,
+                                   'reg_form': register, 'comments': comments})
+                return render(request, 'translationcard.html',
+                              {'translation_data': data, "category": category_list, "translations": translations,
+                               'pk': request.build_absolute_uri().split('/')[-1],
+                               'filtered_translations': filtered_translations, 'key': category, 'day': date,
+                               "day_date": date_filter, 'is_filter': True, "news_key": news_key,
+                               'login_form': login_form,
+                               'reg_form': register, 'comments': comments})
             elif request.build_absolute_uri().split('/')[-2] == "news":
                 data = News.objects.get(id=request.build_absolute_uri().split('/')[-1])
                 data_key = "news_data"
+                comments = NewsComment.objects.filter(news__name=data.name)
+                return render(request, template,
+                              {data_key: data, "category": category_list, "translations": translations, 'news': news,
+                               'first_news': first_news,
+                               'filtered_translations': filtered_translations, 'key': category, 'day': date,
+                               "day_date": date_filter, 'is_filter': True, "news_key": news_key,
+                               'login_form': login_form,
+                               'reg_form': register, 'comments': comments})
             else:
                 data = None
                 data_key = ''
+            subs = Subscription.objects.all()
+            try:
+                search = request.GET.get('search')
+                search_translations = []
+                search_news = []
+                for translation in translations:
+                    if search.lower() in translation.name.lower() or search.lower() in translation.description.lower():
+                        search_translations.append(translation)
+                for new in news:
+                    if search.lower() in new.name.lower() or search.lower() in new.text.lower():
+                        search_news.append(new)
+                if len(search_news) == 0:
+                    search_news = False
+                if len(search_translations) == 0:
+                    search_translations = False
+                return render(request, template,
+                              {data_key: data, "category": category_list, "translations": translations, 'news': news,
+                               'first_news': first_news,
+                               'filtered_translations': filtered_translations, 'key': category, 'day': date,
+                               "day_date": date_filter, 'is_filter': True, "news_key": news_key,
+                               'login_form': login_form,
+                               'reg_form': register, 'subs': subs, 'search_news': search_news,
+                               'search_translations': search_translations})
+            except Exception:
+                pass
             return render(request, template,
                           {data_key: data, "category": category_list, "translations": translations, 'news': news,
                            'first_news': first_news,
                            'filtered_translations': filtered_translations, 'key': category, 'day': date,
                            "day_date": date_filter, 'is_filter': True, "news_key": news_key, 'login_form': login_form,
-                           'reg_form': register})
+                           'reg_form': register, 'subs': subs})
     # Если POST запрос прошел по некорректной форме
     else:
         category = Category.objects.all()
@@ -526,3 +589,90 @@ class UserProfile(View):
 
     def post(self, request, *args, **kwargs):
         return translation_filter(request, 'settings.html')
+
+
+class Search(View):
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        first_news = news[:3]
+        news = news[3:]
+        category = Category.objects.all()
+        translations = Translation.objects.all()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
+        search = request.GET.get('search')
+        search_translations = []
+        search_news = []
+        for translation in translations:
+            if search.lower() in translation.name.lower() or search.lower() in translation.description.lower():
+                search_translations.append(translation)
+        for new in news:
+            if search.lower() in new.name.lower() or search.lower() in new.text.lower():
+                search_news.append(new)
+        if len(search_news) == 0:
+            search_news = False
+        if len(search_translations) == 0:
+            search_translations = False
+        return render(request, 'search.html',
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register,
+                       'search_translations': search_translations, 'search_news': search_news})
+
+    def post(self, request, *args, **kwargs):
+        return translation_filter(request, 'search.html')
+
+
+class AboutUs(View):
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        first_news = news[:3]
+        news = news[3:]
+        category = Category.objects.all()
+        translations = Translation.objects.all()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
+        return render(request, 'aboutus.html',
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
+
+    def post(self, request, *args, **kwargs):
+        return translation_filter(request, 'aboutus.html')
+
+
+class Contacts(View):
+    def get(self, request, *args, **kwargs):
+        news = News.objects.all()
+        first_news = news[:3]
+        news = news[3:]
+        category = Category.objects.all()
+        translations = Translation.objects.all()
+        login_form = LoginForm()
+        register = UserRegistrationForm()
+        return render(request, 'contacts.html',
+                      {"category": category, "translations": translations, 'news': news, 'first_news': first_news,
+                       'key': 'all',
+                       "news_key": 'all', 'day': 'Сегодня',
+                       'is_filter': False, 'login_form': login_form, 'reg_form': register})
+
+    def post(self, request, *args, **kwargs):
+        return translation_filter(request, 'contacts.html')
+
+
+def render_to_response(param, param1, context_instance):
+    pass
+
+
+def handler404(request, *args, **argv):
+    response = render_to_response('404.html', {}, context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request, *args, **argv):
+    response = render_to_response('500.html', {}, context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
