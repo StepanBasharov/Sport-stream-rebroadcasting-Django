@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 from django_ratelimit.decorators import ratelimit
 
 from .models import *
@@ -290,7 +291,7 @@ class Login(View):
 
 
 class Register(View):
-    @ratelimit(key='ip', rate='30/s')
+    @method_decorator(ratelimit(key='ip', rate='10/s', method='POST'))
     def post(self, request, *args, **kwargs):
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
@@ -518,7 +519,7 @@ class AddDislike(LoginRequiredMixin, View):
 
 
 class NewNewsComment(View):
-    @ratelimit(key='ip', rate='5/s')
+    @method_decorator(ratelimit(key='ip', rate='5/s', method='POST'))
     def post(self, request, pk, *args, **kwargs):
         if request.user.is_authenticated:
             comment = request.POST.get('comment')
@@ -543,7 +544,7 @@ class NewNewsComment(View):
 
 
 class NewTranslationComment(View):
-    @ratelimit(key='ip', rate='5/s')
+    @method_decorator(ratelimit(key='ip', rate='5/s', method='POST'))
     def post(self, request, pk, *args, **kwargs):
         if request.user.is_authenticated:
             comment = request.POST.get('comment')
