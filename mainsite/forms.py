@@ -38,6 +38,12 @@ class UserRegistrationForm(forms.ModelForm):
             'пизда',
             'уебок',
             'ебать',
+            'Говно', 'залупа', 'пенис', 'хер', 'давалка', 'хyй', 'блядина', 'шлюха', 'жопа', 'член', 'еблан', 'петух',
+            'мудила',
+            'Рукоблуд', 'ссанина', 'очко', 'блядун', 'вагина', 'Сука', 'ебланище', 'влагалище', 'пердун', 'дрочила',
+            'Пидор', 'пи3да',
+            'гомик', 'мудила', 'пилотка', 'манда', 'Анус', 'вагина', 'путана', 'педрила', 'шалава', 'хуила', 'мошонка',
+            'елда'
         ]
         cd = self.cleaned_data
         if cd['password'] != cd['password2'] or cd['password'] == cd['username'] or cd['password'] == cd['email']:
@@ -50,4 +56,3 @@ class UserRegistrationForm(forms.ModelForm):
 
 class NewsCommetnsForm(forms.ModelForm):
     pass
-

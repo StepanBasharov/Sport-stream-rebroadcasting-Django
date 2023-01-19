@@ -2,10 +2,12 @@ from django.contrib import admin
 from django.contrib.auth import logout
 from django.template.defaulttags import url
 from django.urls import path, include
+from django.views.static import serve
+
 from mainsite import views
 from django.conf.urls.static import static
 from django.conf import settings
-
+from . import settings as sett
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +31,7 @@ urlpatterns = [
     path('resetpassword', views.set_new_password, name='resetpassword'),
     path('search', views.Search.as_view(), name='search'),
     path('about', views.AboutUs.as_view(), name='about'),
-    path('contacts', views.Contacts.as_view(), name='contacts')
+    path('contacts', views.Contacts.as_view(), name='contacts'),
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
