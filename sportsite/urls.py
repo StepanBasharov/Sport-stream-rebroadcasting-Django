@@ -5,6 +5,7 @@ from django.urls import path, include
 from django.views.static import serve
 
 from mainsite import views
+from mediaserver import views as mediaviews
 from django.conf.urls.static import static
 from django.conf import settings
 from . import settings as sett
@@ -32,6 +33,7 @@ urlpatterns = [
     path('search', views.Search.as_view(), name='search'),
     path('about', views.AboutUs.as_view(), name='about'),
     path('contacts', views.Contacts.as_view(), name='contacts'),
+    path('mediaserver/stats', mediaviews.ServerStats.as_view())
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
