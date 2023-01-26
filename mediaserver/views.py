@@ -27,9 +27,13 @@ class ServerStats(View):
             disk_free = humansize(psutil.disk_usage('E:/').free)
             conn = len(psutil.net_connections())
 
-            return render(request, 'new_stream.html',
+            return render(request, 'server_stats.html',
                           {'cpu': cpu, 'memory': memory, 'net_sent': net_sent, 'net_get': net_get, 'disk': disk,
                            'disk_free': disk_free, 'conn': conn})
         else:
             return HttpResponse("Доступ Запрещен")
+
+
+class StreamsStats(View):
+    pass
 
