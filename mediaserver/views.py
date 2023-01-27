@@ -2,7 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 import psutil
-import speedtest
+import multiprocessing
+import os
+from .models import Stream
 
 
 def humansize(nbytes):
@@ -13,6 +15,11 @@ def humansize(nbytes):
         i += 1
     f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
     return '%s %s' % (f, suffixes[i])
+
+
+def run_ffmpeg(input_link, output_link, domian):
+    os.system(
+        f"ffmpeg -re -i {input_link} -c copy -f flv -y rtmp://{domian}/{output_link}")
 
 
 class ServerStats(View):
@@ -34,6 +41,29 @@ class ServerStats(View):
             return HttpResponse("Доступ Запрещен")
 
 
-class StreamsStats(View):
-    pass
+class StreamsNew(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.username == "admin":
+            return render(request, 'new_stream.html')
+        else:
+            return HttpResponse("Доступ запрещен")
 
+    def post(self, request, *args, ):
+        if request.user.username == "admin":
+            stream_name = request.POST.get("stream_name")
+            input_link = request.POST.get("stream_input_link")
+            output_link = request.POST.get("stream_output_link")
+            domian = request.build_absolute_uri('/')[:-1]
+            proc = multiprocessing.Process(target=run_ffmpeg, args=(input_link, output_link, domian, ))
+            proc.start()
+            pid = proc.pid
+            stream = Stream(
+                name=stream_name,
+                input_stream=input_link,
+                output_stream=output_link,
+                stream_pid=pid
+            )
+            stream.save()
+            return render(request, 'new_stream.html')
+        else:
+            return HttpResponse("Доступ запрещен")

@@ -6,10 +6,11 @@
 </head>
 <body>
 <form method="post" action="">
-    <input placeholder="Имя потока">
-    <input placeholder="Ссылка на входной поток">
-    <input placeholder="Ссылка на выходной поток (/live/football_1)">
-    <input placeholder="">
+    {% csrf_token %}
+    <input placeholder="Имя потока" name="stream_name">
+    <input placeholder="Ссылка на входной поток" name="stream_input_link">
+    <input placeholder="Ссылка на выходной поток (/live/football_1)" name="stream_output_link">
+    <button type="submit">Создать трансляцию</button>
 </form>
 </body>
 </html>

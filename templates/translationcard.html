@@ -4,12 +4,12 @@
         <section class="translation">
             <h1 class="translation__title">{{ translation_data.name }}</h1>
             <div class="tranlation__container" style="background-image: url('{{ translation_data.preview.url }}')">
-                <p class="translation__info_day-n-year translation__info">{{ translation_data.date }}</p>
-                <p class="translation__info_hour translation__info">{{ translation_data.time }} (GMT+03:00)</p>
-                <h2 class="translation__info_title translation__info bold2">{{ translation_data.name }}</h2>
                 <!-- подписка данная у пользователя не равна подписке которая должна быть на этой трансляции-->
                 {% if request.user.is_authenticated %}
                     {% if user_data.sub.sub_category != translation_data.category and if_ultimate != "Ultimate" or end_sub == True %}
+                        <p class="translation__info_day-n-year translation__info">{{ translation_data.date }}</p>
+                        <p class="translation__info_hour translation__info">{{ translation_data.time }} (GMT+03:00)</p>
+                        <h2 class="translation__info_title translation__info bold2">{{ translation_data.name }}</h2>
                         <button class="translation__buy-btn btn-no-style" onclick="window.location='{% url 'subs' %}';">
                             <p
                                     class="bold2" style="margin:0; white-space: nowrap;">Купить подписку</p> <br>
@@ -22,6 +22,23 @@
                             </button>
                         </div>
                     {% elif user_data.sub.sub_category == translation_data.category or if_ultimate == "Ultimate" and end_sub == False %}
+                        <div id="player"></div>
+
+                        </script>
+                        <div id="oper"></div>
+                        <div id="vid"></div>
+                        <script>
+                            player = new Clappr.Player({
+                                source: {{ translation_data.link }},
+                                mimeType: "application/x-mpegURL",
+                                autoPlay: true,
+                                height: "400",
+                                width: "100%",
+                                plugins: {"core": [LevelSelector, QualitySelector]},
+                                parentId: "#vid"
+                            });
+                        </script>
+                        </div>
                         <script type="text/javascript">
                             let url = `ws://${window.location.host}/ws/socket-server/{{ pk }}/`
                             const viewStream = new WebSocket(url)
@@ -33,7 +50,6 @@
 
                         </script>
                     {% endif %}
-                    </div>
                     <div class="translation__members-counter"><img src="{% static 'image/icons8-ñÑGÑ¬G¿ó-24.png' %}"
                                                                    alt="users">
                         <p class="translation__members-count">{{ translation_data.online }}</p>
@@ -71,8 +87,8 @@
                         </button>
                     </div>
                 {% endif %}
-        </section>
-        </section>
-        <div class="px2"></div>
+    </section>
+    </section>
+    <div class="px2"></div>
     </div>
 {% endblock content %}
