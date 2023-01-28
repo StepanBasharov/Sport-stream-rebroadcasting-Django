@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый поток</title>
+</head>
+<body>
+<form method="post" action="">
+    {% csrf_token %}
+    <select name="stream" class="form-select" aria-label="Пример выбора по умолчанию">
+        {% for stream in streams %}
+            <option value="{{ stream.stream_pid }}">{{ stream.name }}</option>
+        {% endfor %}
+    </select>
+    <button name="status" value="stop" type="submit">stop</button>
+    <button name="status" value="start" type="submit">start</button>
+    <button name="status" value="kill" type="submit">kill</button>
+</form>
+</body>
+</html>

@@ -17,9 +17,17 @@ def humansize(nbytes):
     return '%s %s' % (f, suffixes[i])
 
 
-def run_ffmpeg(input_link, output_link, domian):
-    os.system(
-        f"ffmpeg -re -i {input_link} -c copy -f flv -y rtmp://{domian}/{output_link}")
+def run_ffmpeg(pid):
+    os.system(pid)
+
+
+def kill(pid):
+    os.system(f'pkill -9 -f "{pid}"')
+    Stream.objects.filter(stream_pid=pid).delete()
+
+
+def stop(pid):
+    os.system(f'pkill -9 -f -STOP "{pid}"')
 
 
 class ServerStats(View):
@@ -53,17 +61,35 @@ class StreamsNew(View):
             stream_name = request.POST.get("stream_name")
             input_link = request.POST.get("stream_input_link")
             output_link = request.POST.get("stream_output_link")
-            domian = request.build_absolute_uri('/')[:-1]
-            proc = multiprocessing.Process(target=run_ffmpeg, args=(input_link, output_link, domian, ))
+            domian = request.build_absolute_uri('/').split("/")[2].split(":")[0]
+            pid = f"ffmpeg -re -i {input_link} -c copy -f flv -y rtmp://{domian}{output_link}"
+            proc = multiprocessing.Process(target=run_ffmpeg, args=(pid,))
             proc.start()
-            pid = proc.pid
             stream = Stream(
                 name=stream_name,
                 input_stream=input_link,
-                output_stream=output_link,
+                output_stream=domian + ":8080" + output_link + ".m3u8",
                 stream_pid=pid
             )
             stream.save()
             return render(request, 'new_stream.html')
         else:
             return HttpResponse("Доступ запрещен")
+
+
+class StreamManger(View):
+    def get(self, request, *args, **kwargs):
+        stream = Stream.objects.all()
+        return render(request, 'streams_manager.html', {"streams": stream})
+
+    def post(self, request, *args, **kwargs):
+        status = request.POST.get("status")
+        stream = request.POST.get("stream")
+        if status == "kill":
+            kill(stream)
+        elif status == "start":
+            run_ffmpeg(stream)
+        elif status == "stop":
+            stop(stream)
+
+        return HttpResponse(f"{status}{stream}")

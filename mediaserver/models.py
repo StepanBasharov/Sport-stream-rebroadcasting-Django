@@ -13,3 +13,4 @@ class Stream(models.Model):
     class Meta:
         verbose_name = "Поток"
         verbose_name_plural = "Потоки"
+

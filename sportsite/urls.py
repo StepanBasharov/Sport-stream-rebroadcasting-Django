@@ -33,8 +33,9 @@ urlpatterns = [
     path('search', views.Search.as_view(), name='search'),
     path('about', views.AboutUs.as_view(), name='about'),
     path('contacts', views.Contacts.as_view(), name='contacts'),
-    path('mediaserver/stats', mediaviews.ServerStats.as_view()),
-    path('mediaserver/new_stream', mediaviews.StreamsNew.as_view())
+    path('mediaserver/server-monitor', mediaviews.ServerStats.as_view()),
+    path('mediaserver/new-stream', mediaviews.StreamsNew.as_view()),
+    path('mediaserver/meneger-stream', mediaviews.StreamManger.as_view())
 ]
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
