@@ -17,29 +17,12 @@ def humansize(nbytes):
     return '%s %s' % (f, suffixes[i])
 
 
-def run_ffmpeg(pid, tmux_session):
-    os.system(f"tmux new-session -t {tmux_session}")
-    os.system(f"{pid}")
-    os.system("tmux detach")
+def run_ffmpeg(pid, screen_name):
+    os.system(f"screen -dmS {screen_name} {pid}")
 
 
-def restart_ffmpeg(pid, tmux_session):
-    os.system(f"tmux attach -t {tmux_session}")
-    os.system(f"{pid}")
-    os.system("tmux detach")
-
-
-def kill(pid, tmux_session):
-    os.system(f'tmux attach -t {tmux_session}')
-    os.system(f'q')
-    os.system(f'tmux kill-session -t {tmux_session}')
-    Stream.objects.filter(stream_pid=pid).delete()
-
-
-def stop(pid, tmux_session):
-    os.system(f'tmux attach -t {tmux_session}')
-    os.system(f"q")
-    os.system(f"tmux detach")
+def kill(screen_name):
+    os.system(f"screen -S {screen_name} -X quit")
 
 
 class ServerStats(View):
@@ -98,12 +81,8 @@ class StreamManger(View):
     def post(self, request, *args, **kwargs):
         status = request.POST.get("status")
         stream = request.POST.get("stream")
-        tmux_session = Stream.objects.get(stream_pid=stream).tmux_session
+        screen_name = Stream.objects.get(stream_pid=stream).tmux_session
         if status == "kill":
-            kill(stream, tmux_session)
-        elif status == "start":
-            run_ffmpeg(stream, tmux_session)
-        elif status == "stop":
-            stop(stream, tmux_session)
+            kill(screen_name)
 
-        return HttpResponse(f"{status}{stream}")
+        return HttpResponse(f"{status}{screen_name}")
