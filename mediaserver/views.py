@@ -17,17 +17,29 @@ def humansize(nbytes):
     return '%s %s' % (f, suffixes[i])
 
 
-def run_ffmpeg(pid):
-    os.system(pid)
+def run_ffmpeg(pid, tmux_session):
+    os.system(f"tmux new-session -t {tmux_session}")
+    os.system(f"{pid}")
+    os.system("tmux detach")
 
 
-def kill(pid):
-    os.system(f'pkill -9 -f "{pid}"')
+def restart_ffmpeg(pid, tmux_session):
+    os.system(f"tmux attach -t {tmux_session}")
+    os.system(f"{pid}")
+    os.system("tmux detach")
+
+
+def kill(pid, tmux_session):
+    os.system(f'tmux attach -t {tmux_session}')
+    os.system(f'q')
+    os.system(f'tmux kill-session -t {tmux_session}')
     Stream.objects.filter(stream_pid=pid).delete()
 
 
-def stop(pid):
-    os.system(f'pkill -9 -f -STOP "{pid}"')
+def stop(pid, tmux_session):
+    os.system(f'tmux attach -t {tmux_session}')
+    os.system(f"q")
+    os.system(f"tmux detach")
 
 
 class ServerStats(View):
@@ -63,13 +75,14 @@ class StreamsNew(View):
             output_link = request.POST.get("stream_output_link")
             domian = request.build_absolute_uri('/').split("/")[2].split(":")[0]
             pid = f"ffmpeg -re -i {input_link} -c copy -f flv -y rtmp://{domian}{output_link}"
-            proc = multiprocessing.Process(target=run_ffmpeg, args=(pid,))
+            proc = multiprocessing.Process(target=run_ffmpeg, args=(pid, stream_name))
             proc.start()
             stream = Stream(
                 name=stream_name,
                 input_stream=input_link,
                 output_stream=domian + ":8080" + output_link + ".m3u8",
-                stream_pid=pid
+                stream_pid=pid,
+                tmux_session=stream_name
             )
             stream.save()
             return render(request, 'new_stream.html')
@@ -85,11 +98,12 @@ class StreamManger(View):
     def post(self, request, *args, **kwargs):
         status = request.POST.get("status")
         stream = request.POST.get("stream")
+        tmux_session = Stream.objects.get(stream_pid=stream).tmux_session
         if status == "kill":
-            kill(stream)
+            kill(stream, tmux_session)
         elif status == "start":
-            run_ffmpeg(stream)
+            run_ffmpeg(stream, tmux_session)
         elif status == "stop":
-            stop(stream)
+            stop(stream, tmux_session)
 
         return HttpResponse(f"{status}{stream}")

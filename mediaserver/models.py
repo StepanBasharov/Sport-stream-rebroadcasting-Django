@@ -6,6 +6,7 @@ class Stream(models.Model):
     input_stream = models.CharField("Входной поток", max_length=500)
     output_stream = models.CharField("Выходной поток", max_length=500)
     stream_pid = models.CharField("PID", max_length=100, default="0000")
+    tmux_session = models.CharField("TMUX", max_length=100, default="sess")
 
     def __str__(self):
         return self.name
