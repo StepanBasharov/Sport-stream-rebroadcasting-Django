@@ -33,8 +33,8 @@ class ServerStats(View):
             net = psutil.net_io_counters()
             net_sent = humansize(net.bytes_sent)
             net_get = humansize(net.bytes_recv)
-            disk = psutil.disk_usage('E:/')[3]
-            disk_free = humansize(psutil.disk_usage('E:/').free)
+            disk = psutil.disk_usage('/')[3]
+            disk_free = humansize(psutil.disk_usage('/').free)
             conn = len(psutil.net_connections())
 
             return render(request, 'server_stats.html',
@@ -57,13 +57,13 @@ class StreamsNew(View):
             input_link = request.POST.get("stream_input_link")
             output_link = request.POST.get("stream_output_link")
             domian = request.build_absolute_uri('/').split("/")[2].split(":")[0]
-            pid = f"ffmpeg -re -i {input_link} -c copy -f flv -y rtmp://{domian}{output_link}"
+            pid = f"ffmpeg -re -i {input_link} -c copy -f flv -y rtmp://185.189.255.205/{output_link}"
             proc = multiprocessing.Process(target=run_ffmpeg, args=(pid, stream_name))
             proc.start()
             stream = Stream(
                 name=stream_name,
                 input_stream=input_link,
-                output_stream=domian + ":8080" + output_link + ".m3u8",
+                output_stream="https://video." + domian + output_link + ".m3u8",
                 stream_pid=pid,
                 tmux_session=stream_name
             )

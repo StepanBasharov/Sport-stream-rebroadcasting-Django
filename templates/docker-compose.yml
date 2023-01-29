@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+
+  web:
+    container_name: Web1
+    build: .
+    command: bash -c "python manage.py runserver 0.0.0.0:22222"
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - "22222:22222"
+    networks:
+      - web1
+      
+networks:
+  web1:
+    driver: bridge

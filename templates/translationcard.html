@@ -29,7 +29,7 @@
                         <div id="vid"></div>
                         <script>
                             player = new Clappr.Player({
-                                source: {{ "translation_data.link" }},
+                                source: "{{ translation_data.link }}",
                                 mimeType: "application/x-mpegURL",
                                 autoPlay: true,
                                 height: "400",
@@ -40,7 +40,7 @@
                         </script>
                         </div>
                         <script type="text/javascript">
-                            let url = `ws://${window.location.host}/ws/socket-server/{{ pk }}/`
+                            let url = `wss://${window.location.host}/ws/socket-server/{{ pk }}/`
                             const viewStream = new WebSocket(url)
                             viewStream.onmessage = function (e) {
                                 let data = JSON.parse(e.data);
@@ -75,17 +75,20 @@
                     {% else %}
                     {% endif %}
                 {% else %}
-                    <button class="translation__buy-btn btn-no-style" onclick="window.location='{% url 'subs' %}';">
-                        <p
-                                class="bold2" style="margin:0; white-space: nowrap;">Купить подписку</p> <br>
-                        <p style="margin:0; font-weight: 200;">от 299р</p></button>
-                    <div class="translation__bottom-elems">
-                        <button class="translation__error-btn btn-no-style trans-bottom-btns">Сообщить о проблеме
-                        </button>
-                        <button class="translation__user-agreement btn-no-style trans-bottom-btns">Пользовательское
-                            соглашение
-                        </button>
-                    </div>
+                    <p class="translation__info_day-n-year translation__info">{{ translation_data.date }}</p>
+                        <p class="translation__info_hour translation__info">{{ translation_data.time }} (GMT+03:00)</p>
+                        <h2 class="translation__info_title translation__info bold2">{{ translation_data.name }}</h2>
+                        <button class="translation__buy-btn btn-no-style" onclick="window.location='{% url 'subs' %}';">
+                            <p
+                                    class="bold2" style="margin:0; white-space: nowrap;">Купить подписку</p> <br>
+                            <p style="margin:0; font-weight: 200;">от 299р</p></button>
+                        <div class="translation__bottom-elems">
+                            <button class="translation__error-btn btn-no-style trans-bottom-btns">Сообщить о проблеме
+                            </button>
+                            <button class="translation__user-agreement btn-no-style trans-bottom-btns">Пользовательское
+                                соглашение
+                            </button>
+                        </div>
                 {% endif %}
     </section>
     </section>
