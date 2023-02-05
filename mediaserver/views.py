@@ -5,6 +5,8 @@ import psutil
 import multiprocessing
 import os
 from .models import Stream
+import ffmpeg_streaming
+from ffmpeg_streaming import Formats, Bitrate, Representation, Size
 
 
 def humansize(nbytes):
@@ -21,8 +23,12 @@ def run_ffmpeg(pid, screen_name):
     os.system(f"screen -dmS {screen_name} {pid}")
 
 
-def kill(screen_name):
+def kill(pid, screen_name):
     os.system(f"screen -S {screen_name} -X quit")
+    path_m3u8 = Stream.objects.get(stream_pid=pid).output_stream.split("/")[0]
+    Stream.objects.filter(stream_pid=pid).delete()
+    print(f"mainsite/static/{path_m3u8}")
+    os.system(f"rm -rf mainsite/static/{path_m3u8}")
 
 
 class ServerStats(View):
@@ -56,14 +62,12 @@ class StreamsNew(View):
             stream_name = request.POST.get("stream_name")
             input_link = request.POST.get("stream_input_link")
             output_link = request.POST.get("stream_output_link")
-            domian = request.build_absolute_uri('/').split("/")[2].split(":")[0]
-            pid = f"ffmpeg -re -i {input_link} -c copy -f flv -y rtmp://185.189.255.205/{output_link}"
-            proc = multiprocessing.Process(target=run_ffmpeg, args=(pid, stream_name))
-            proc.start()
+            pid = f"python3 runer.py -i {input_link} -o {output_link}"
+            run_ffmpeg(pid, stream_name)
             stream = Stream(
                 name=stream_name,
                 input_stream=input_link,
-                output_stream="https://video." + domian + output_link + ".m3u8",
+                output_stream='video/' + output_link,
                 stream_pid=pid,
                 tmux_session=stream_name
             )
@@ -79,10 +83,14 @@ class StreamManger(View):
         return render(request, 'streams_manager.html', {"streams": stream})
 
     def post(self, request, *args, **kwargs):
-        status = request.POST.get("status")
-        stream = request.POST.get("stream")
-        screen_name = Stream.objects.get(stream_pid=stream).tmux_session
-        if status == "kill":
-            kill(screen_name)
+        if request.user.username == "admin":
+            status = request.POST.get("status")
+            stream = request.POST.get("stream")
+            screen_name = Stream.objects.get(stream_pid=stream).tmux_session
+            if status == "kill":
+                kill(stream, screen_name)
 
-        return HttpResponse(f"{status}{screen_name}")
+            return HttpResponse(f"{status}{screen_name}")
+        else:
+            return HttpResponse("Доступ запрещен")
+

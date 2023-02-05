@@ -7,12 +7,11 @@
 <body>
 <form method="post" action="">
     {% csrf_token %}
-    <select name="stream" class="form-select" aria-label="Пример выбора по умолчанию">
-        {% for stream in streams %}
-            <option value="{{ stream.stream_pid }}">{{ stream.name }}</option>
-        {% endfor %}
-    </select>
-    <button name="status" value="kill" type="submit">kill</button>
+    {% for stream in streams %}
+            {{ stream.name }}
+            <input name="stream" value="{{ stream.stream_pid }}">
+            <button name="status" value="kill" type="submit">kill</button>
+    {% endfor %}
 </form>
 </body>
 </html>

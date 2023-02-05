@@ -2,8 +2,8 @@ version: "3.3"
 
 services:
 
-  web:
-    container_name: Web
+  web1:
+    container_name: Web3
     build: .
     command: bash -c "python3 manage.py runserver 0.0.0.0:22222"
     restart: always
@@ -12,8 +12,8 @@ services:
     ports:
       - "22222:22222"
     networks:
-      - web
+      - web1
       
 networks:
-  web:
+  web1:
     driver: bridge
