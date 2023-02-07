@@ -25,4 +25,10 @@ def run_ffmpeg():
     hls.representations(_240p, _360p, _480p)
     hls.output("mainsite/static/video/" + arg.output)
 
-run_ffmpeg()
+while True:
+    try:
+        run_ffmpeg()
+    except Exception as e:
+        with open("log.txt", "a+") as f:
+            f.write(e + "\n")
+        run_ffmpeg()
