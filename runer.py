@@ -32,3 +32,15 @@ while True:
         with open("log.txt", "a+") as f:
             f.write(e + "\n")
         run_ffmpeg()
+# Новая версия ранера
+"""
+import subprocess
+def runffmpeg(input_link, output_link):
+    try:
+        subprocess.check_output(['ffmpeg', '-re', '-i', input_link, '-c', 'copy', '-f', 'flv', '-y', f'rtmp://{output_link}'])
+    except subprocess.CalledProcessError as e:
+        print("fuck")
+        test()
+
+test()
+"""
