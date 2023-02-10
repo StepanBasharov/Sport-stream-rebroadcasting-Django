@@ -2,6 +2,7 @@ import ffmpeg_streaming
 from ffmpeg_streaming import Formats, Bitrate, Representation, Size
 import sys
 import argparse
+import subprocess
 
 
 def createParser():
@@ -16,14 +17,11 @@ def run_ffmpeg():
     args = createParser()
     arg =args.parse_args()
     print(arg.input)
-    video = ffmpeg_streaming.input(arg.input)
-
-    _240p  = Representation(Size(426, 240), Bitrate(150 * 1024, 47 * 1024))
-    _360p  = Representation(Size(640, 360), Bitrate(276 * 1024, 64 * 1024))
-    _480p  = Representation(Size(854, 480), Bitrate(750 * 1024, 96 * 1024))
-    hls = video.hls(Formats.h264())
-    hls.representations(_240p, _360p, _480p)
-    hls.output("mainsite/static/video/" + arg.output)
+    try:
+        subprocess.check_output(['ffmpeg', '-re', '-i', arg.input, '-c', 'copy', '-f', 'flv', '-y', f'rtmp://{arg.output}'])
+    except subprocess.CalledProcessError as e:
+        print("fuck")
+        test()
 
 while True:
     try:
@@ -32,15 +30,3 @@ while True:
         with open("log.txt", "a+") as f:
             f.write(e + "\n")
         run_ffmpeg()
-# Новая версия ранера
-"""
-import subprocess
-def runffmpeg(input_link, output_link):
-    try:
-        subprocess.check_output(['ffmpeg', '-re', '-i', input_link, '-c', 'copy', '-f', 'flv', '-y', f'rtmp://{output_link}'])
-    except subprocess.CalledProcessError as e:
-        print("fuck")
-        test()
-
-test()
-"""
