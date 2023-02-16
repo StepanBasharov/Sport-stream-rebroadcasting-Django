@@ -20,8 +20,7 @@ def run_ffmpeg():
     try:
         subprocess.check_output(['ffmpeg', '-re', '-i', arg.input, '-c', 'copy', '-f', 'flv', '-y', f'rtmp://{arg.output}'])
     except subprocess.CalledProcessError as e:
-        print("fuck")
-        test()
+        run_ffmpeg()
 
 while True:
     try:
