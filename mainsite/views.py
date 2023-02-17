@@ -344,6 +344,7 @@ class Index(View):
 
 class TranslationPage(View):
     def get(self, request, pk, *args, **kwargs):
+        messages = TranslationChatMessages.objects.filter(room=pk)[0:25]
         data = Translation.objects.get(id=pk)
         comments = TranslationComment.objects.filter(translation__name=data.name)
         category = Category.objects.all()
@@ -365,7 +366,8 @@ class TranslationPage(View):
                            'key': 'all',
                            "news_key": 'all', 'day': 'Сегодня',
                            'is_filter': False, 'login_form': login_form, 'reg_form': register, 'comments': comments,
-                           'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub, 'pk': pk})
+                           'user_data': user_data, 'if_ultimate': if_ultimate, 'end_sub': end_sub, 'pk': pk,
+                           'messages': messages})
         return render(request, 'translationcard.html',
                       {'translation_data': data, "category": category, "translations": translations,
                        'key': 'all',

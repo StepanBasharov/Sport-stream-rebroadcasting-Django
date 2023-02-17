@@ -1,11 +1,19 @@
 import json
 
-from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync, sync_to_async
 from channels.generic.websocket import WebsocketConsumer
 from .models import Translation
+from .models import TranslationChatMessages
+
+
+def save_message(username, room, message):
+    new_message = TranslationChatMessages(username=username, room=room, text=message)
+    new_message.save()
+    print("done")
 
 
 class Watcher(WebsocketConsumer):
+
     def connect(self):
         self.pk = self.scope["url_route"]["kwargs"]["pk"]
         async_to_sync(self.channel_layer.group_add)(
@@ -21,7 +29,6 @@ class Watcher(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         user = text_data_json['user']
-
         async_to_sync(self.channel_layer.group_send)(
             self.pk,
             {
@@ -35,6 +42,7 @@ class Watcher(WebsocketConsumer):
     def chat_message(self, event):
         message = event['message']
         user = event['user']
+
         obscene_words = [
             'хуй',
             'пизда',
@@ -45,7 +53,7 @@ class Watcher(WebsocketConsumer):
         ]
         if message in obscene_words or message.startswith("http://") or message.startswith("https://"):
             message = "*****"
-
+        sync_to_async(save_message(user, self.pk, message))
         self.send(text_data=json.dumps({
             'type': 'chat',
             'message': message,

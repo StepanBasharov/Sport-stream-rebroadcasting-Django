@@ -46,7 +46,10 @@
                     </div>
                     <p class="translation__description">{{ translation_data.category }}</p>
                     <div id="chat-box">
-                        <!-- Chat messages will be added here -->
+                        {% for message in messages %}
+                            <p class="comentator">{{ message.username }}</p>
+                            <p class="mesg">{{ message.text }}</p>
+                        {% endfor %}
                     </div>
                     <br/>
                     <div class="input-area">

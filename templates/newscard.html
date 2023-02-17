@@ -1,58 +1,88 @@
 {% extends "base-main.html" %}{% load static %}
 {% block title %}{{ news_data.name }}{% endblock title %} {% block content %}
-    <div class="streams-margin">
-        <section class="post">
-            <h1 class="post__title">
-                {{ news_data.name }}
-            </h1>
-            <img src="{{ news_data.preview.url }}" alt="#" class="post__img">
-            <div class="post__info">
-                <p class="post__img-source">{{ news_data.photo_author }}</p>
-                <div class="send-like-dislike">
-                    {% if request.user.is_authenticated %}
-                        <form action="{% url 'like' news_data.pk %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit"
-                                    class="post__like btn-no-style post__btns">{{ news_data.likes.all.count }}
-                                <img src="{% static 'image/Mask grouplike1.svg' %}" alt="#">
-                            </button>
-                        </form>
-                        <form action="{% url 'dislike' news_data.pk %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit"
-                                    class="post__dislike btn-no-style post__btns"> {{ news_data.dislikes.all.count }}
-                                <img src="{% static 'image/Mask grouplike2.svg' %}" alt="#">
-                            </button>
-                        </form>
-                    {% else %}
+<div class="streams-margin">
+    <section class="post">
+        <h1 class="post__title">
+            {{ news_data.name }}
+        </h1>
+        <img src="{{ news_data.preview.url }}" alt="#" class="post__img">
+        <div class="post__info">
+            <p class="post__img-source">{{ news_data.photo_author }}</p>
+            <div class="send-like-dislike">
+                {% if request.user.is_authenticated %}
+                    <form action="{% url 'like' news_data.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="post__like btn-no-style post__btns">{{ news_data.likes.all.count }}
+                            <img src="{% static 'image/Mask grouplike1.svg' %}" alt="#">
+                        </button>
+                    </form>
+                    <form action="{% url 'dislike' news_data.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="post__dislike btn-no-style post__btns"> {{ news_data.dislikes.all.count }}
+                            <img src="{% static 'image/Mask grouplike2.svg' %}" alt="#">
+                        </button>
+                    </form>
+                {% else %}
 
-                    {% endif %}
-                </div>
+                {% endif %}
             </div>
-            <p class="post__text">{{ news_data.text|safe }}
-            </p>
+        </div>
+        <p class="post__text">{{ news_data.text|safe }}
+        </p>
 
 
-            <section class="comments">
+        <section class="comments">
             <h2 class="comments__title">Комментарии</h2>
-                {% for i in comments %}
+            {% for i in comments %}
 
-                    <article class="comments__comment">
-                        <h2 class="comments__name">{{ i.author }}</h2>
-                        <p class="comments__comment-text">{{ i.text }}</p>
-                    </article>
-                {% endfor %}
-            </section>
-            {% if request.user.is_authenticated %}
+                <article class="comments__comment comment">
+                    <h2 class="comments__name">{{ i.author }}</h2>
+                    <p class="comments__comment-text">{{ i.text }}</p>
+                </article>
+            {% endfor %}
+            <button id="show-more-button" class="btn-no-style show-more-comments">Показать больше
+                комментариев
+            </button>
+
+            <script>
+                const showMoreButton = document.getElementById("show-more-button");
+                const comments = document.querySelectorAll(".comment");
+                const initialCommentsToShow = 10; // show the first 10 comments by default
+                let currentCommentsToShow = initialCommentsToShow;
+
+                // hide all comments after the initial comments to show
+                for (let i = currentCommentsToShow; i < comments.length; i++) {
+                    comments[i].style.display = "none";
+                }
+
+                showMoreButton.addEventListener("click", () => {
+                    // show the next set of comments
+                    for (let i = currentCommentsToShow; i < currentCommentsToShow + initialCommentsToShow; i++) {
+                        if (comments[i]) {
+                            comments[i].style.display = "block";
+                        }
+                    }
+                    currentCommentsToShow += initialCommentsToShow;
+
+                    // hide the "show more" button if there are no more comments to show
+                    if (currentCommentsToShow >= comments.length) {
+                        showMoreButton.style.display = "none";
+                    }
+                });
+            </script>
+        </section>
+        {% if request.user.is_authenticated %}
             <form action="{% url 'comment' news_data.pk %}" class="post__comment" method="post">
                 {% csrf_token %}
                 <textarea name="comment" id="comment" cols="30" rows="10" class="post__textarea"
                           placeholder="Оставьте свой комментарий..."></textarea>
                 <button class="post__comment-btn btn-no-style">Отправить</button>
             </form>
-            {% else %}
-            {% endif %}
-        </section>
-        <div class="px2"></div>
-    </div>
+        {% else %}
+        {% endif %}
+    </section>
+    <div class="px2"></div>
+</div>
 {% endblock content %}

@@ -112,3 +112,13 @@ class UserSubs(models.Model):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+
+class TranslationChatMessages(models.Model):
+    username = models.CharField(max_length=255)
+    room = models.CharField(max_length=255)
+    text = models.TextField()
+
+    class Meta:
+        verbose_name = "Сообщение"
+        verbose_name_plural = "Сообщения чата"
