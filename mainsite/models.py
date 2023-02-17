@@ -119,6 +119,9 @@ class TranslationChatMessages(models.Model):
     room = models.CharField(max_length=255)
     text = models.TextField()
 
+    def __str__(self):
+        return f"Чат трансляции №{self.room}"
+
     class Meta:
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения чата"

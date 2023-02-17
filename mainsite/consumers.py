@@ -29,6 +29,7 @@ class Watcher(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         user = text_data_json['user']
+        sync_to_async(save_message(user, self.pk, message))
         async_to_sync(self.channel_layer.group_send)(
             self.pk,
             {
@@ -53,7 +54,6 @@ class Watcher(WebsocketConsumer):
         ]
         if message in obscene_words or message.startswith("http://") or message.startswith("https://"):
             message = "*****"
-        sync_to_async(save_message(user, self.pk, message))
         self.send(text_data=json.dumps({
             'type': 'chat',
             'message': message,

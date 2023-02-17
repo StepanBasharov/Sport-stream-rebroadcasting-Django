@@ -344,7 +344,7 @@ class Index(View):
 
 class TranslationPage(View):
     def get(self, request, pk, *args, **kwargs):
-        messages = TranslationChatMessages.objects.filter(room=pk)[0:25]
+        messages = TranslationChatMessages.objects.filter(room=pk)
         data = Translation.objects.get(id=pk)
         comments = TranslationComment.objects.filter(translation__name=data.name)
         category = Category.objects.all()
